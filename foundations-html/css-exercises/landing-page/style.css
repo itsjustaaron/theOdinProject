@@ -1,0 +1,144 @@
+body {
+  font-family: sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin: 0;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+}
+
+button {
+  padding: 8px 24px;
+  font-weight: bold;
+  background-color: #3882f6;
+  color: #f9faf8;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+}
+
+.header,
+.content > div,
+.footer {
+  padding: 16px 150px 100px;
+  display: flex;
+}
+
+.header,
+.content__hero,
+.footer {
+  color: white;
+  background-color: #1f2937;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+  color: #f9faf8;
+}
+
+.links {
+  display: flex;
+  gap: 24px;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.content__hero {
+  gap: 50px;
+}
+
+.content__hero__copy h1 {
+  color: #f9faf8;
+  font-size: 48px;
+}
+
+.content__hero__copy p,
+.links a {
+  font-size: 18px;
+  color: #e5e7eb;
+}
+
+.content__hero__image {
+  width: 100%;
+  min-width: 350px;
+  min-height: 100%;
+  background: #666;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.content__info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.content__info h2 {
+  color: #1f2937;
+}
+
+.content__info__cards {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card-image {
+  width: 150px;
+  height: 150px;
+  border: 2px solid #3882f6;
+  border-radius: 8px;
+}
+
+.content__quote {
+  background-color: #e5e7eb;
+}
+
+.content__quote__block {
+  font-size: 36px;
+  font-style: italic;
+  font-weight: lighter;
+}
+
+.content__quote__author {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.content__cta__banner {
+  background-color: #3882f6;
+  color: #f9faf8;
+  border-radius: 8px;
+  display: flex;
+  padding: 50px;
+  justify-content: space-between;
+  flex: 1 1 auto;
+}
+
+.banner__button {
+  border: 1px solid #f9faf8;
+  background: rgba(0, 0, 0, 0);
+}
+
+.footer {
+  justify-content: center;
+  align-items: center;
+  padding: 24px;
+}
