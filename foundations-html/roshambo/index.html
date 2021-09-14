@@ -7,8 +7,45 @@
     <title>Rock Paper Scissors!</title>
   </head>
   <body>
-    <div>🪨 📝 ✂️</div>
-    <div>Open console to play</div>
+    <h1>🪨 📜 ✂️</h1>
+    <div>Score 5 points to win the game</div>
+    <div class="game-buttons">
+      <button>🪨</button>
+      <button>📜</button>
+      <button>✂️</button>
+    </div>
+    <button class="reset">RESET</button>
+    <div class="results"></div>
+    <style>
+      body {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 30px;
+      }
+
+      .game-buttons {
+        min-width: 350px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 15px;
+      }
+
+      .game-buttons button {
+        padding: 24px;
+        width: 100px;
+        height: 100px;
+        font-size: 30px;
+        cursor: pointer;
+        border-radius: 8px;
+      }
+
+      .reset {
+        background: red;
+      }
+    </style>
     <script src="game.js"></script>
   </body>
 </html>
