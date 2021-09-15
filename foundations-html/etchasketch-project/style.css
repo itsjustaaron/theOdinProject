@@ -114,6 +114,11 @@ body {
     background-color: #161617;
 }
 
+.grid__buttons {
+    display: flex;
+    gap: 30px;
+}
+
 .grid__button {
     margin: 16px auto;
     font-size: 18px;

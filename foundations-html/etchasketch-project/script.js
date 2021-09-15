@@ -1,5 +1,6 @@
 const grid = document.querySelector('.grid__body');
 const button = document.querySelector('.grid__button');
+const clearButton = document.querySelector('.grid__button.clear');
 
 function colorSquare() {
   this.classList.add('grid__square--filled');
@@ -32,6 +33,12 @@ function buildGrid(n) {
   squares.forEach(square => square.addEventListener('mouseover', colorSquare));
 }
 
+function clearGrid() {
+  const squares = grid.querySelectorAll('.grid__square');
+  squares.forEach(square => square.classList.remove('grid__square--filled'));
+}
+
 buildGrid(16);
 
 button.addEventListener('click', buildGrid);
+clearButton.addEventListener('click', clearGrid);
