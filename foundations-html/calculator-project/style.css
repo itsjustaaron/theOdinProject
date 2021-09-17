@@ -80,3 +80,94 @@ body {
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
     color: #161617;
 }
+
+button {
+  color: #dfdde1;
+  font-weight: bold;
+  padding: 12px 28px;
+  border-radius: 8px
+}
+
+.container {
+  width: 100%;
+  max-width: 1280px;
+  margin: 15% auto;
+}
+
+.calculator {
+  width: 350px;
+  margin: auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+
+  background-color: #262425;
+  border-radius: 16px;
+}
+
+.calculator__title {
+  font-size: 14px;
+}
+
+.calculator__display {
+  width: 100%;
+  padding: 5px 10px;
+  text-align: right;
+
+  background-color: #dfdde1;
+  border-radius: 4px;
+}
+
+.calculator__buttons {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(5, 1fr);
+  grid-template-areas:
+    "clear clear clear operator"
+    "number number number operator"
+    "number number number operator"
+    "number number number operator"
+    "number number number operator";
+    gap: 8px;
+}
+
+button.number {
+  background-color: #afa56a;
+}
+
+.clear {
+  grid-area: clear;
+}
+
+.numbers {
+  grid-area: number;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  flex: 1;
+}
+
+.operators {
+  grid-area: operator;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+button.zero {
+  flex-grow: 2;
+}
+
+button.operator {
+  background-color: #f21828;
+}
+
+button.clear {
+  background-color: #5995ed;
+  width: 100%;
+}
