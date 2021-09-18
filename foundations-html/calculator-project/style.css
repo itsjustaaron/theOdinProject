@@ -84,8 +84,11 @@ body {
 button {
   color: #dfdde1;
   font-weight: bold;
-  padding: 12px 28px;
-  border-radius: 8px
+  padding: 12px 30px;
+  border-radius: 8px;
+  box-shadow: inset rgb(0 0 0 / 50%) 0 0 4px 2px;
+  border: none;
+  cursor: pointer;
 }
 
 .container {
@@ -104,7 +107,8 @@ button {
   align-items: center;
   gap: 20px;
 
-  background-color: #262425;
+  /* background-color: #262425; */
+  background-color: #1e2a4b;
   border-radius: 16px;
 }
 
@@ -117,7 +121,8 @@ button {
   padding: 5px 10px;
   text-align: right;
 
-  background-color: #dfdde1;
+  /* background-color: #dfdde1; */
+  background-color: #f9ffff;
   border-radius: 4px;
 }
 
@@ -136,7 +141,8 @@ button {
 }
 
 button.number {
-  background-color: #afa56a;
+  /* background-color: #afa56a; */
+  background-color: #42aec9;
 }
 
 .clear {
@@ -164,10 +170,16 @@ button.zero {
 }
 
 button.operator {
-  background-color: #f21828;
+  /* background-color: #f21828; */
+  background-color: #d24447;
 }
 
 button.clear {
-  background-color: #5995ed;
+  /* background-color: #5995ed; */
+  /* background-color: #E49273; */
+  background-color: #CA054D;
+  /* color: #161617; */
   width: 100%;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
