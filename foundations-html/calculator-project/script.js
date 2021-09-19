@@ -2,9 +2,9 @@ const buttons = document.querySelectorAll('button');
 const displayArea = document.querySelector('.calculator__display');
 
 // functions for basic math
-const add = (n1, n2) => n1 + n2;
-const subtract = (n1, n2) => n1 - n2;
-const multiply = (n1, n2) => n1 * n2;
+const add = (n1, n2) => +(n1 + n2).toFixed(3);
+const subtract = (n1, n2) => +(n1 - n2).toFixed(3);
+const multiply = (n1, n2) => +(n1 * n2).toFixed(3);
 
 function divide(n1, n2) {
     // don't allow dividing by zero
@@ -14,7 +14,7 @@ function divide(n1, n2) {
         // return updateDisplay();
     }
 
-    return n1 / n2;
+    return +(n1 / n2).toFixed(3);
 }
 
 const operators = {
