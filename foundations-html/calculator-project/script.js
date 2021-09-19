@@ -30,6 +30,7 @@ let displayValue = '0';
 let firstNumber;
 let secondNumber;
 let selectedOperation;
+// let chaining = false;
 
 function resetStorage(displayReset = false) {
     displayReset ? displayValue = '0' : null;
@@ -40,9 +41,10 @@ function resetStorage(displayReset = false) {
 
 // update display window based on user input
 function updateDisplay(e) {
-    console.log(displayValue, firstNumber, secondNumber);
+    console.table('before:', displayValue, firstNumber, secondNumber, selectedOperation);
     // check if input is an operator
     if (Object.keys(operators).includes(e.target.textContent)) {
+        console.log("It's an operator!");
         // store the current displayValue for calculation;
         // since operations can be chained,
         // check if firstNumber is already in use
@@ -53,6 +55,7 @@ function updateDisplay(e) {
             // perform current operation and update the display
             // TODO: find bug in chaining multiple operations
             // seems to get stuck using previous operator?
+            // also uses wrong / "old" nums
             displayValue = operate(firstNumber, secondNumber, selectedOperation);
             firstNumber = +displayValue;
             secondNumber = undefined;
@@ -61,6 +64,7 @@ function updateDisplay(e) {
         }
 
         selectedOperation = operators[e.target.textContent];
+        console.table('after:', displayValue, firstNumber, secondNumber, selectedOperation);
         return;
     }
 
@@ -75,12 +79,14 @@ function updateDisplay(e) {
         // update display before clearing storage values
         displayArea.textContent = displayValue;
         resetStorage();
+        console.table('after:', displayValue, firstNumber, secondNumber, selectedOperation);
         return firstNumber = +displayValue;
     }
 
     if (e.target.textContent.toLowerCase() === 'clear') {
         // clear storage values before updating display
         resetStorage(true);
+        console.table('after:', displayValue, firstNumber, secondNumber, selectedOperation);
         return displayArea.textContent = displayValue;
     }
 
@@ -91,6 +97,7 @@ function updateDisplay(e) {
             secondNumber = +displayValue;
         }
 
+        console.table('after:', displayValue, firstNumber, secondNumber, selectedOperation);
         return displayArea.textContent = displayValue;
     }
 
@@ -104,13 +111,14 @@ function updateDisplay(e) {
     }
 
     if (displayValue && !Object.keys(operators).includes(e.target.textContent)) {
-        displayValue = +displayValue + +e.target.textContent;
+        displayValue = selectedOperation ? e.target.textContent : displayValue + e.target.textContent;
     }
 
     if (firstNumber) {
         secondNumber = +displayValue;
     }
 
+    console.table('after:', displayValue, firstNumber, secondNumber, selectedOperation);
     return displayArea.textContent = displayValue;
 }
 

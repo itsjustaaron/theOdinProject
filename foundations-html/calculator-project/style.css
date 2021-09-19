@@ -79,6 +79,10 @@ body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
     color: #161617;
+    background-color: #1e2a4b;
+    background-image:
+      radial-gradient(at 47% 33%, hsl(224.00, 43%, 48%) 0, transparent 59%),
+      radial-gradient(at 82% 65%, hsl(192.00, 56.00000000000001%, 52%) 0, transparent 55%);
 }
 
 button {
@@ -108,8 +112,12 @@ button {
   gap: 20px;
 
   /* background-color: #262425; */
-  background-color: #1e2a4b;
-  border-radius: 16px;
+  /* background-color: #1e2a4b; */
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  background-color: rgba(17, 25, 40, 0.75);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.125);
 }
 
 .calculator__title {
@@ -124,6 +132,9 @@ button {
   /* background-color: #dfdde1; */
   background-color: #f9ffff;
   border-radius: 4px;
+  box-shadow:
+    inset 0px 11px 8px -10px #161617,
+    inset 0px -11px 8px -10px #161617;
 }
 
 .calculator__buttons {
