@@ -88,6 +88,7 @@ body {
 button {
   color: #dfdde1;
   font-weight: bold;
+  width: 71px;
   padding: 12px 30px;
   border-radius: 8px;
   box-shadow: inset rgb(0 0 0 / 50%) 0 0 4px 2px;
@@ -156,8 +157,12 @@ button.number {
   background-color: #42aec9;
 }
 
-.clear {
+.buttons.clear {
   grid-area: clear;
+  display: flex;
+  justify-content: space-between;
+  flex: 1 1 auto;
+  gap: 8px;
 }
 
 .numbers {
@@ -185,12 +190,16 @@ button.operator {
   background-color: #d24447;
 }
 
-button.clear {
+.clear button {
   /* background-color: #5995ed; */
   /* background-color: #E49273; */
   background-color: #CA054D;
   /* color: #161617; */
-  width: 100%;
+  /* width: 100%; */
   text-transform: uppercase;
   letter-spacing: 1px;
+}
+
+.clear button.clear {
+  flex-grow: 2;
 }

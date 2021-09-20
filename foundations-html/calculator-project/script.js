@@ -9,9 +9,10 @@ const multiply = (n1, n2) => +(n1 * n2).toFixed(3);
 function divide(n1, n2) {
     // don't allow dividing by zero
     if (n2 === 0) {
-        // display warning
-        // "are you trying to kill me?!"
-        // return updateDisplay();
+        // doesn't work?
+        console.log("DON'T DIVIDE BY ZERO AHHHHH");
+        resetStorage();
+        return displayArea.textContent = "Are you trying to kill me?!";
     }
 
     return +(n1 / n2).toFixed(3);
@@ -24,7 +25,7 @@ const operators = {
     '/': divide
 };
 
-const operate = (n1, n2, operation) => operation(n1, n2);
+const operate = (n1, n2, operation) => operation(+n1, +n2);
 
 let displayValue = '0';
 let firstNumber;
@@ -41,10 +42,8 @@ function resetStorage(displayReset = false) {
 
 // update display window based on user input
 function updateDisplay(e) {
-    console.table('before:', displayValue, firstNumber, secondNumber, selectedOperation);
     // check if input is an operator
     if (Object.keys(operators).includes(e.target.textContent)) {
-        console.log("It's an operator!");
         // store the current displayValue for calculation;
         // since operations can be chained,
         // check if firstNumber is already in use
@@ -53,9 +52,6 @@ function updateDisplay(e) {
             displayValue = '0';
         } else {
             // perform current operation and update the display
-            // TODO: find bug in chaining multiple operations
-            // seems to get stuck using previous operator?
-            // also uses wrong / "old" nums
             displayValue = operate(firstNumber, secondNumber, selectedOperation);
             firstNumber = +displayValue;
             secondNumber = undefined;
@@ -64,7 +60,6 @@ function updateDisplay(e) {
         }
 
         selectedOperation = operators[e.target.textContent];
-        console.table('after:', displayValue, firstNumber, secondNumber, selectedOperation);
         return;
     }
 
@@ -79,14 +74,20 @@ function updateDisplay(e) {
         // update display before clearing storage values
         displayArea.textContent = displayValue;
         resetStorage();
-        console.table('after:', displayValue, firstNumber, secondNumber, selectedOperation);
         return firstNumber = +displayValue;
+    }
+
+    // undo last input
+    if (e.target.classList.value === 'undo') {
+        displayValue.length > 1
+            ? displayValue = displayValue.slice(0, displayValue.length - 1)
+            : selectedOperation = undefined;
+        return displayArea.textContent = displayValue;
     }
 
     if (e.target.textContent.toLowerCase() === 'clear') {
         // clear storage values before updating display
         resetStorage(true);
-        console.table('after:', displayValue, firstNumber, secondNumber, selectedOperation);
         return displayArea.textContent = displayValue;
     }
 
@@ -97,7 +98,6 @@ function updateDisplay(e) {
             secondNumber = +displayValue;
         }
 
-        console.table('after:', displayValue, firstNumber, secondNumber, selectedOperation);
         return displayArea.textContent = displayValue;
     }
 
@@ -118,7 +118,6 @@ function updateDisplay(e) {
         secondNumber = +displayValue;
     }
 
-    console.table('after:', displayValue, firstNumber, secondNumber, selectedOperation);
     return displayArea.textContent = displayValue;
 }
 
