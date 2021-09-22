@@ -10,3 +10,7 @@ function Book(title, author, pages, read) {
         return `${this.title} by ${this.author}, ${this.pages} pages, ${this.read ? "read" : "not read yet"}.`;
     }
 }
+
+const mistborn = new Book('Mistborn: The Final Empire', 'Brandon Sanderson', '671', true);
+
+console.log(mistborn.info());
