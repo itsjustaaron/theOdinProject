@@ -1,5 +1,7 @@
 const myLibrary = [];
 const bookContainer = document.querySelector('.book-container');
+const bookForm = document.querySelector('.new-book-form form');
+const formInputs = bookForm.querySelectorAll('input');
 
 function Book(title, author, pages, read) {
     this.title = title;
@@ -34,10 +36,32 @@ function addNewBook(book) {
         return myLibrary.push(book);
     }
 
-    const newBook = new Book(...book);
+    const {title, author, pages, read} = book;
+
+    const newBook = new Book(title, author, pages, read);
     myLibrary.push(newBook);
 
     displayBooks();
+}
+
+function resetForm() {
+    formInputs.forEach(input => {
+        input.type === 'text'
+            ? input.value = ''
+            : input.checked = false;
+    });
+}
+
+function handleForm(event) {
+    event.preventDefault();
+    const inputData = [...formInputs].reduce((a, b) => {
+        if (b.type = "text" || b.checked) {
+            return { ...a, [b.name]: (b.checked ? b.checked : b.value) };
+        }
+    }, {});
+
+    addNewBook(inputData);
+    resetForm();
 }
 
 const mistborn = new Book('Mistborn: The Final Empire', 'Brandon Sanderson', '671', true);
@@ -47,3 +71,5 @@ console.log(mistborn.info());
 addNewBook(mistborn);
 
 displayBooks();
+
+bookForm.addEventListener('submit', handleForm);
