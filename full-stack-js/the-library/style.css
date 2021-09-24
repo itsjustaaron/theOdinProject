@@ -80,3 +80,52 @@ body {
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
     color: #161617;
 }
+
+/*
+#fefefd
+#392a3f
+#de4862
+#2c6bd0
+*/
+
+.header {
+    color: #392a3f;
+    border-bottom: 1px solid #392a3f;
+    padding: 16px;
+    display: flex;
+    justify-content: space-between;
+    box-shadow: 0 0 6px 0 #392a3f;
+}
+
+.header-title {
+    font-size: 32px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.book-container {
+    width: 100%;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+
+}
+
+.book-card {
+    border: 1px solid #392a3f;
+    border-radius: 8px;
+    padding: 16px;
+}
+
+.book-form {
+    display: none;
+}
+
+button {
+    background-color: #2c6bd0;
+    color: #fefefd;
+    border-radius: 8px;
+    padding: 8px 24px;
+    font-weight: bold;
+    cursor: pointer;
+}

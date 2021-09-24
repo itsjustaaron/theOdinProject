@@ -1,6 +1,6 @@
 const myLibrary = [];
 const bookContainer = document.querySelector('.book-container');
-const bookForm = document.querySelector('.new-book-form form');
+const bookForm = document.querySelector('.book-form form');
 const formInputs = bookForm.querySelectorAll('input');
 
 function Book(title, author, pages, read) {
@@ -46,17 +46,23 @@ function addNewBook(book) {
 
 function resetForm() {
     formInputs.forEach(input => {
-        input.type === 'text'
-            ? input.value = ''
-            : input.checked = false;
+        if (input.type === 'radio') {
+            input.checked = false;
+        } else {
+            input.value = '';
+        }
     });
 }
 
 function handleForm(event) {
     event.preventDefault();
     const inputData = [...formInputs].reduce((a, b) => {
-        if (b.type = "text" || b.checked) {
+        if (b.type = "text") {
             return { ...a, [b.name]: (b.checked ? b.checked : b.value) };
+        }
+
+        if (b.checked) {
+            return { ...a, [b.name]: true };
         }
     }, {});
 
