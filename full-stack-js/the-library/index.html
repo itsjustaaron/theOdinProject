@@ -5,35 +5,47 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Library</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="header">
-        <div class="header-title">The Library</div>
+        <div class="header-title">
+            <h1>The Library</h1>
+        </div>
         <button class="add-book">Add a Book</button>
     </div>
     <div class="book-container"></div>
-    <div class="book-form">
-        <form action="">
-            <div class="form-group">
-                <label for="title">Title:</label>
-                <input type="text" name="title" />
+    <div class="book-modal" aria-hidden="true">
+        <div class="book-form">
+            <div class="book-modal-header">
+                <h2>Add a Book</h2>
             </div>
-            <div class="form-group">
-                <label for="author">Author:</label>
-                <input type="text" name="author" />
-            </div>
-            <div class="form-group">
-                <label for="pages">Page count:</label>
-                <input type="text" name="pages" />
-            </div>
-            <div class="form-group">
-                <label for="read">Read:</label>
-                <input type="radio" name="read" value="yes" />Yes
-                <input type="radio" name="read" value="no" />No
-            </div>
-            <button type="submit">Add Book</button>
-        </form>
+            <form action="">
+                <div class="form-group">
+                    <label for="title">Title:</label>
+                    <input type="text" name="title" placeholder="Book Title" />
+                </div>
+                <div class="form-group">
+                    <label for="author">Author:</label>
+                    <input type="text" name="author" placeholder="Author Name" />
+                </div>
+                <div class="form-group">
+                    <label for="pages">Page count:</label>
+                    <input type="text" name="pages" placeholder="Number of pages" />
+                </div>
+                <div class="form-group">
+                    <label for="read">Read:</label>
+                    <div class="radio-buttons">
+                        <input type="radio" name="read" value="yes" />Yes
+                        <input type="radio" name="read" value="no" />No
+                    </div>
+                </div>
+                <button type="submit">Add Book</button>
+            </form>
+        </div>
     </div>
     <script src="script.js"></script>
 </body>
