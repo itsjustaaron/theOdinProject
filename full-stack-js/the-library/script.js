@@ -96,7 +96,7 @@ function handleForm(event) {
 
     console.log('before', formInputs);
     const inputData = [...formInputs].reduce((a, b) => {
-        if (b.type = "text") {
+        if (b.type === "text") {
             return { ...a, [b.name]: (b.checked ? b.checked : b.value) };
         }
 
