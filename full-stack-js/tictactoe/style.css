@@ -80,3 +80,60 @@ body {
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
     color: #161617;
 }
+
+.game-board {
+    width: 490px;
+    margin: 20% auto;
+    padding: 20px;
+    display: grid;
+    grid-template: repeat(3, 1fr) / repeat(3, 1fr);
+}
+
+.game-board__tile {
+    width: 150px;
+    height: 150px;
+    border: 1px solid #161617;
+}
+
+.game-board__tile:nth-child(3n) {
+    border-right: none;
+}
+
+.game-board__tile:nth-child(3n + 1) {
+    border-left: none;
+}
+
+.game-board__tile:nth-child(n + 1):nth-child(-n + 3) {
+    border-top: none;
+}
+
+.game-board__tile:nth-child(n + 7):nth-child(-n + 9) {
+    border-bottom: none;
+}
+
+.game-board__tile::before {
+    display: block;
+    margin-top: -40px;
+    margin-left: 4px;
+    font-size: 150px;
+}
+
+.game-board__tile--x::before {
+    color: #5eceb3;
+    content: "⨯";
+    font-size: 300px;
+    margin-top: -205px;
+}
+
+.game-board__tile--o::before {
+    color: #fa5f6f;
+    content: "○";
+}
+
+/*
+O color: #fa5f6f; content: "○";
+X color: #5eceb3; content: "⨯";
+
+potential colors for board #b2b5a5 & #483535
+*/
+
