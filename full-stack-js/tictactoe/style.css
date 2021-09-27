@@ -81,6 +81,18 @@ body {
     color: #161617;
 }
 
+.container {
+    position: relative;
+}
+
+canvas {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+}
+
 .game-board {
     width: 490px;
     margin: 20% auto;
@@ -93,6 +105,9 @@ body {
     width: 150px;
     height: 150px;
     border: 1px solid #161617;
+    position: relative;
+    cursor: pointer;
+    /* z-index: 1; */
 }
 
 .game-board__tile:nth-child(3n) {
@@ -113,16 +128,22 @@ body {
 
 .game-board__tile::before {
     display: block;
-    margin-top: -40px;
-    margin-left: 4px;
-    font-size: 150px;
+    position: absolute;
+    top: 50%;
+    left: 68%;
+    transform: translate(-50%, -50%);
+    font-size: 100px;
+    height: 150px;
+    width: 150px;
+    z-index: -1;
 }
 
 .game-board__tile--x::before {
     color: #5eceb3;
     content: "⨯";
-    font-size: 300px;
-    margin-top: -205px;
+    font-size: 200px;
+    top: 0;
+    transform: translate(-48%, -76%); /* magic numbers */
 }
 
 .game-board__tile--o::before {
