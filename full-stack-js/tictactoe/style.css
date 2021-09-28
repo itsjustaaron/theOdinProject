@@ -119,7 +119,7 @@ button {
 .game-controls {
     width: 30%;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
 }
 
@@ -184,6 +184,16 @@ button {
 
 .game-controls label:active::before {
     content: '';
+}
+
+.game-controls__toggle {
+    display: flex;
+    align-self: center;
+    margin-right: 40px;
+}
+
+.game-controls__toggle--hidden {
+    display: none;
 }
 
 .container {

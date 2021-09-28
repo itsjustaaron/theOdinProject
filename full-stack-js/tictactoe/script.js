@@ -207,6 +207,7 @@ const gameController = (function () {
     const resetButton = document.querySelector('.game-controls__reset');
     const modalReset = document.querySelector('.details-modal__postgame__reset');
     const continueButton = document.querySelector('.details-modal__pregame__continue');
+    const difficultyContainer = document.querySelector('.game-controls__toggle');
 
     // game options - TODO: refactor into object
     let setupStepTracker = 1;
@@ -237,6 +238,7 @@ const gameController = (function () {
         if (document.querySelector('canvas')) {
             document.querySelector('canvas').remove();
         }
+
         // reset current gameplay settings
         currentPlayer = undefined;
         computerAsPlayer2 = undefined;
@@ -246,6 +248,7 @@ const gameController = (function () {
         hardMode = false;
 
         difficultyButton.checked = false;
+        difficultyContainer.classList.add('game-controls__toggle--hidden');
 
         // reset pregame button text
         continueButton.textContent = 'Continue';
@@ -558,6 +561,7 @@ const gameController = (function () {
             console.log(`The computer ${computerAsPlayer2 ? 'will' : 'will not'} play as player 2`);
 
             if (computerAsPlayer2) {
+                difficultyContainer.classList.remove('game-controls__toggle--hidden');
                 continueButton.textContent = "Let's play!";
             }
 
