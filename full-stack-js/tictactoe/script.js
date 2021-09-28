@@ -1,7 +1,4 @@
-// need a game board module
 const gameBoard = (function() {
-    // write all game board logic here
-    // return anything that needs to be accessed
     function clearBoard() {
         return new Array(length = 9);
     }
@@ -11,6 +8,8 @@ const gameBoard = (function() {
     return { board, clearBoard };
 })();
 
+// this module made possible with STRONG help from:
+// https://www.geeksforgeeks.org/minimax-algorithm-in-game-theory-set-3-tic-tac-toe-ai-finding-optimal-move/
 const minimaxAI = (function () {
     class Move {
         constructor() {
@@ -22,9 +21,6 @@ const minimaxAI = (function () {
     // we set the "player" in the algorithm to be the O
     let player = 'o', opponent = 'x';
 
-    // This function returns true if there are moves
-    // remaining on the board. It returns false if
-    // there are no moves left to play.
     function isMovesLeft(board) {
         for(let i = 0; i < 3; i++) {
             for(let j = 0; j < 3; j++) {
@@ -36,7 +32,6 @@ const minimaxAI = (function () {
 
         return false;
     }
-
 
     function evaluate(b) {
         // Checks all rows for X or O victory.
@@ -87,10 +82,8 @@ const minimaxAI = (function () {
         return 0;
     }
 
-    // This is the minimax function. It
-    // considers all the possible ways
-    // the game can go and returns the
-    // value of the board
+    // This function considers all the possible ways
+    // the game can go and returns the value of the board
     function minimax(board, depth, isMax) {
         let score = evaluate(board);
 
@@ -163,8 +156,6 @@ const minimaxAI = (function () {
         }
     }
 
-    // This will return the best possible
-    // move for the player
     function findBestMove(board) {
         const startTime = Date.now();
         let bestVal = -1000;
@@ -172,18 +163,13 @@ const minimaxAI = (function () {
         bestMove.row = -1;
         bestMove.col = -1;
 
-        // Traverse all cells, evaluate
-        // minimax function for all empty
-        // cells. And return the cell
-        // with optimal value.
-        for(let i = 0; i < 3; i++)
-        {
-            for(let j = 0; j < 3; j++)
-            {
+        // Traverse all cells, evaluate minimax function for all empty
+        // cells. And return the cell with optimal value.
+        for(let i = 0; i < 3; i++) {
+            for(let j = 0; j < 3; j++) {
 
                 // Check if cell is empty
-                if (board[i][j] == '_')
-                {
+                if (board[i][j] == '_') {
 
                     // Make the move
                     board[i][j] = player;
@@ -205,15 +191,14 @@ const minimaxAI = (function () {
             }
         }
 
-        // log elapsed time to console
-        console.log(`Time passed: ${Math.round((Date.now() - startTime) / 60)}`);
+
+        console.log(`Minimax ran in ${Math.round((Date.now() - startTime) / 60)} seconds`);
         return bestMove;
     }
 
     return { findBestMove };
 })();
 
-// need a game controller module
 const gameController = (function () {
     // grab any needed dom elements
     const gameTiles = document.querySelectorAll('.game-board__tile');
@@ -234,10 +219,8 @@ const gameController = (function () {
     // wait helper function
     const wait = (amount = 0) => new Promise(resolve => setTimeout(resolve, amount));
 
-    // need a function to render the
-    // game board to the dom
+    // used for initial testing - TODO: needs refactored now
     function renderBoard(placements) {
-        // console.log(placements);
         gameTiles.forEach((tile, i) => tile.classList.add(`game-board__tile--${placements[i]}`));
     }
 
@@ -296,15 +279,6 @@ const gameController = (function () {
                     tileToPlay = getMove();
                     console.log(`rerolled as ${tileToPlay}`);
                 }
-
-                // if (!usedTiles.includes(tileToPlay)) {
-                //     const computerTile = document.querySelector(`[data-position="${tileToPlay}"`);
-                //     computerTile.classList.add('game-board__tile--o');
-
-                //     board[tileToPlay] = 'o';
-
-                //     return checkGameStatus(board);
-                // }
             } else {
                 // minmax algorithm
                 const boardMatrix = [
@@ -349,10 +323,8 @@ const gameController = (function () {
             //     e.stopPropagation();
 
             //     if (!e.target.closest('.details-modal__pregame') || e.target.closest('.details-modal__close')) {
-            //         console.log('Clicked outside of the modal - modal will close');
             //         modal.classList.remove('details-modal--open-pre');
             //     } else {
-            //         console.log('Clicked inside the modal - modal will not close');
             //     }
             // });
 
@@ -373,10 +345,8 @@ const gameController = (function () {
                 e.stopPropagation();
 
                 if (!e.target.closest('.details-modal__postgame') || e.target.closest('.details-modal__close')) {
-                    console.log('Clicked outside of the modal - modal will close');
                     modal.classList.remove('details-modal--open-post');
                 } else {
-                    console.log('Clicked inside the modal - modal will not close');
                 }
             });
 
@@ -409,8 +379,6 @@ const gameController = (function () {
             let x, y;
 
             // determine type and position of line to draw
-            console.log(lineType, offset);
-
             switch (lineType) {
                 case 'row':
                     y = 75 + (150 * offset);
@@ -543,11 +511,12 @@ const gameController = (function () {
         }
 
         if (e.target.classList.length > 1) {
-            return console.log("tile already in use", this);
+            return console.log("tile already in use");
         }
 
         validatingLastMove = true;
 
+        const { board } = gameBoard;
         const { position } = e.target.dataset;
 
         currentPlayer = (currentPlayer === player2 || !currentPlayer)
@@ -556,9 +525,9 @@ const gameController = (function () {
 
         this.classList.add(`game-board__tile--${currentPlayer.gamePiece}`);
 
-        gameBoard.board[position] = currentPlayer.gamePiece;
-        console.log(gameBoard.board, currentPlayer.name);
-        checkGameStatus(gameBoard.board);
+        board[position] = currentPlayer.gamePiece;
+        console.log(board, currentPlayer.name);
+        checkGameStatus(board);
         if (computerAsPlayer2 && gameIsActive) {
             return makeComputerPlay();
         }
