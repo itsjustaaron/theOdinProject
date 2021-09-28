@@ -8,8 +8,6 @@ const gameBoard = (function() {
 
     const board = clearBoard();
 
-    // should game status be checked here or in controller?
-
     return { board, clearBoard };
 })();
 
@@ -19,6 +17,8 @@ const gameController = (function () {
     const gameTiles = document.querySelectorAll('.game-board__tile');
     const resetButton = document.querySelector('.game-controls__reset');
     const modalReset = document.querySelector('.postgame-modal__dialog__reset');
+    let computerAsPlayer2 = true;
+    let gameIsActive = true;
     let currentPlayer;
 
     // wait helper function
@@ -31,8 +31,55 @@ const gameController = (function () {
         gameTiles.forEach((tile, i) => tile.classList.add(`game-board__tile--${placements[i]}`));
     }
 
+    function setUpGame() {
+        gameBoard.board = gameBoard.clearBoard();
+        // remove any game pieces currently on the board
+        // and reset event listeners
+        gameTiles.forEach(tile => {
+            tile.className = 'game-board__tile';
+            tile.removeEventListener('click', handleGameplay);
+            tile.addEventListener('click', handleGameplay, {once: true});
+        });
+        // clear the canvas
+        if (document.querySelector('canvas')) {
+            document.querySelector('canvas').remove();
+        }
+        // clear current player setting
+        currentPlayer = undefined;
+        gameIsActive = true;
+        // hide modal
+        document.querySelector('.postgame-modal').classList.remove('postgame-modal--open');
+    }
+
+    function makeComputerPlay() {
+        console.log('Ok Computer!');
+        currentPlayer = Player('o', 'Computer');
+        // wait a second before playing
+        // to avoid awkward timing from
+        // instant computer play
+        wait(1000).then(() => {
+            const { board } = gameBoard;
+            const usedTiles = board.map((el, i) => !!el ? i : null);
+            const getMove = () => Math.floor(Math.random() * board.length);
+            let tileToPlay = getMove();
+            while (usedTiles.includes(tileToPlay)) {
+                console.log(`oops - can't play at ${tileToPlay}`);
+                tileToPlay = getMove();
+                console.log(`rerolled as ${tileToPlay}`);
+            }
+
+            if (!usedTiles.includes(tileToPlay)) {
+                const computerTile = document.querySelector(`[data-position="${tileToPlay}"`);
+                computerTile.classList.add('game-board__tile--o');
+
+                board[tileToPlay] = 'o';
+
+                return checkGameStatus(board);
+            }
+        });
+    }
+
     function toggleModal() {
-        // hard code opening for now
         const modal = document.querySelector('.postgame-modal');
 
         // if user clicks outside of modal or clicks close button, close modal
@@ -58,7 +105,7 @@ const gameController = (function () {
     }
 
     function drawOnBoard(lineType, offset) {
-        // if no canvas exists in the dom
+        // make sure there is no existing canvas
         if (!document.querySelector('canvas')) {
             // create canvas and set dimensions to match board
             const canvas = document.createElement('canvas');
@@ -118,7 +165,7 @@ const gameController = (function () {
             let modalText;
 
             if (lineType !== 'tie') {
-                modalText = `<p class="${currentPlayer?.marker}">${currentPlayer?.name} wins!</p>`;
+                modalText = `<p class="${currentPlayer?.gamePiece}">${currentPlayer?.name} wins!</p>`;
             } else {
                 modalText = `<p>It's a tie...</p>`;
             }
@@ -127,7 +174,7 @@ const gameController = (function () {
 
             modalContent.innerHTML = modalText;
 
-            wait(1500).then(() => toggleModal());
+            wait(1000).then(() => toggleModal());
         }
     }
 
@@ -149,6 +196,7 @@ const gameController = (function () {
         const winner = winningPlacements.find(arr => arr[0] === arr[1] && arr[1] === arr[2] && !!arr[0]);
 
         if (winner) {
+            gameIsActive = false;
             const winPosition = winningPlacements.findIndex(el => el === winner);
             // set starting line based on where game was won
             const lineStart = [0, 3, 6].includes(winPosition) ? 0 : [1, 4].includes(winPosition)
@@ -191,10 +239,12 @@ const gameController = (function () {
     function handleGameplay(e) {
         e.stopPropagation();
 
-        currentPlayer = (currentPlayer === player2 || !currentPlayer) ? player1 : player2;
+        currentPlayer = (computerAsPlayer2 || currentPlayer === player2 || !currentPlayer)
+        ? player1
+        : player2;
 
         const { position } = e.target.dataset;
-        if (this.classList.length > 1) {
+        if (e.target.classList.length > 1) {
             return console.log("tile already in use", this);
         }
 
@@ -203,6 +253,9 @@ const gameController = (function () {
         gameBoard.board[position] = currentPlayer.gamePiece;
         console.log(gameBoard.board, currentPlayer.name);
         checkGameStatus(gameBoard.board);
+        if (computerAsPlayer2) {
+            return makeComputerPlay();
+        }
     }
 
     function handleReset(e) {
@@ -211,32 +264,15 @@ const gameController = (function () {
 
         console.log('resetting game');
 
-        gameBoard.board = gameBoard.clearBoard();
-        // remove any game pieces currently on the board
-        gameTiles.forEach(tile => tile.className = 'game-board__tile');
-        // clear the canvas
-        if (document.querySelector('canvas')) {
-            document.querySelector('canvas').remove();
-        }
-        // clear current player setting
-        currentPlayer = undefined;
-        // hide modal
-        document.querySelector('.postgame-modal').classList.remove('postgame-modal--open');
+        return setUpGame();
     }
 
     resetButton.addEventListener('click', handleReset);
     modalReset.addEventListener('click', handleReset);
 
-    // gameTiles.forEach(tile => tile.addEventListener('click', handleGameplay, {once: true}));
-    gameTiles.forEach(tile => tile.addEventListener('click', handleGameplay));
-        // console.log(this);
-        // console.dir(this);
-        // if (this.classList.length > 1) {
-        //     console.log("tile already in use");
-    //     // }
-    // }));
+    // gameTiles.forEach(tile => tile.addEventListener('click', handleGameplay));
 
-    return { renderBoard, drawOnBoard };
+    return { renderBoard, drawOnBoard, setUpGame };
 })();
 
 // gameController.renderBoard(gameBoard.board);
@@ -252,3 +288,4 @@ function Player(marker, playerName) {
 // global logic
 const player1 = Player('x');
 const player2 = Player('o');
+gameController.setUpGame();
