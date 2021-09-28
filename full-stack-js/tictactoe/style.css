@@ -116,6 +116,77 @@ button {
     color: #161617;
 }
 
+.game-controls {
+    width: 30%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* difficulty toggle switch */
+.game-controls input[type="checkbox"] {
+    width: 0;
+    height: 0;
+    visibility: hidden;
+}
+
+.game-controls label {
+    display: block;
+    width: 150px;
+    height: 30px;
+    background-color: #2081C3;
+    background-color: #7A7A90;
+    border-radius: 20px;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.5s ease-out;
+    box-shadow: 0 0 8px #7A7A90;
+    color: #5eceb3;
+}
+
+.game-controls input:checked + label {
+    background-color: #6E44FF;
+    background-color: #23232A;
+}
+
+.game-controls label::before {
+    content: 'Easy Mode';
+    position: absolute;
+    top: 3px;
+    left: 50px;
+    transition: .5s;
+}
+
+.game-controls label::after {
+    content: '';
+    width: 20px;
+    height: 20px;
+    background-color: #fefefd;
+    border-radius: 20px;
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    transition: 0.5s ease-out;
+}
+
+.game-controls input:checked + label::after {
+    left: calc(100% - 5px);
+    transform: translateX(-100%);
+}
+
+.game-controls input:checked + label::before {
+    content: 'Hard Mode';
+    left: 15px;
+}
+
+.game-controls label:active::after {
+    width: 30px;
+}
+
+.game-controls label:active::before {
+    content: '';
+}
+
 .container {
     position: relative;
 }
@@ -196,7 +267,7 @@ all of the game piece placements are magic numbers
     content: "○";
 }
 
-.details-modal:before {
+.details-modal::before {
     content: "";
     display: none;
     background: rgba(0, 0, 0, 0.6);
@@ -208,8 +279,8 @@ all of the game piece placements are magic numbers
     z-index: 11;
 }
 
-.details-modal--open-pre:before,
-.details-modal--open-post:before {
+.details-modal--open-pre::before,
+.details-modal--open-post::before {
     display: block;
 }
 

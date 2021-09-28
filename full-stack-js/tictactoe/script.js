@@ -11,11 +11,214 @@ const gameBoard = (function() {
     return { board, clearBoard };
 })();
 
+const minimaxAI = (function () {
+    class Move {
+        constructor() {
+            let row,col;
+        }
+    }
+
+    // player1 is X, so since the AI is the only user of this algorithm,
+    // we set the "player" in the algorithm to be the O
+    let player = 'o', opponent = 'x';
+
+    // This function returns true if there are moves
+    // remaining on the board. It returns false if
+    // there are no moves left to play.
+    function isMovesLeft(board) {
+        for(let i = 0; i < 3; i++) {
+            for(let j = 0; j < 3; j++) {
+                if (board[i][j] == '_') {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+
+    function evaluate(b) {
+        // Checks all rows for X or O victory.
+        for (let row = 0; row < 3; row++) {
+            if (b[row][0] == b[row][1] && b[row][1] == b[row][2]) {
+                if (b[row][0] == player) {
+                    return +10;
+                }
+
+                else if (b[row][0] == opponent) {
+                    return -10;
+                }
+            }
+        }
+
+        // Checks all columns for X or O victory.
+        for (let col = 0; col < 3; col++) {
+            if (b[0][col] == b[1][col] && b[1][col] == b[2][col]) {
+                if (b[0][col] == player) {
+                    return +10;
+                }
+
+                else if (b[0][col] == opponent) {
+                    return -10;
+                }
+            }
+        }
+
+        // Checking for Diagonals for X or O victory.
+        if (b[0][0] == b[1][1] && b[1][1] == b[2][2]) {
+            if (b[0][0] == player)
+                return +10;
+
+            else if (b[0][0] == opponent)
+                return -10;
+        }
+
+        if (b[0][2] == b[1][1] && b[1][1] == b[2][0]) {
+            if (b[0][2] == player)
+                return +10;
+
+            else if (b[0][2] == opponent)
+                return -10;
+        }
+
+        // Else if none of them have
+        // won then return 0
+        return 0;
+    }
+
+    // This is the minimax function. It
+    // considers all the possible ways
+    // the game can go and returns the
+    // value of the board
+    function minimax(board, depth, isMax) {
+        let score = evaluate(board);
+
+        // If Maximizer has won the game
+        // return his/her evaluated score
+        if (score == 10) {
+            return score;
+        }
+
+        // If Minimizer has won the game
+        // return his/her evaluated score
+        if (score == -10) {
+            return score;
+        }
+
+        // If there are no more moves and
+        // no winner then it is a tie
+        if (isMovesLeft(board) == false) {
+            return 0;
+        }
+
+        // If this maximizer's move
+        if (isMax) {
+            let best = -1000;
+
+            // Traverse all cells
+            for (let i = 0; i < 3; i++) {
+                for (let j = 0; j < 3; j++) {
+
+                    // Check if cell is empty
+                    if (board[i][j]=='_') {
+                        // Make the move
+                        board[i][j] = player;
+
+                        // Call minimax recursively and choose the maximum value
+                        best = Math.max(best, minimax(board,
+                                        depth + 1, !isMax));
+
+                        // Undo the move
+                        board[i][j] = '_';
+                    }
+                }
+            }
+            return best;
+        }
+
+        // If this minimizer's move
+        else {
+            let best = 1000;
+
+            // Traverse all cells
+            for (let i = 0; i < 3; i++) {
+                for (let j = 0; j < 3; j++) {
+                    // Check if cell is empty
+                    if (board[i][j] == '_') {
+
+                        // Make the move
+                        board[i][j] = opponent;
+
+                        // Call minimax recursively and choose the minimum value
+                        best = Math.min(best, minimax(board,
+                                        depth + 1, !isMax));
+
+                        // Undo the move
+                        board[i][j] = '_';
+                    }
+                }
+            }
+            return best;
+        }
+    }
+
+    // This will return the best possible
+    // move for the player
+    function findBestMove(board) {
+        const startTime = Date.now();
+        let bestVal = -1000;
+        let bestMove = new Move();
+        bestMove.row = -1;
+        bestMove.col = -1;
+
+        // Traverse all cells, evaluate
+        // minimax function for all empty
+        // cells. And return the cell
+        // with optimal value.
+        for(let i = 0; i < 3; i++)
+        {
+            for(let j = 0; j < 3; j++)
+            {
+
+                // Check if cell is empty
+                if (board[i][j] == '_')
+                {
+
+                    // Make the move
+                    board[i][j] = player;
+
+                    // compute evaluation function for this move.
+                    let moveVal = minimax(board, 0, false);
+
+                    // Undo the move
+                    board[i][j] = '_';
+
+                    // If the value of the current move is more than
+                    // the best value, then update best
+                    if (moveVal > bestVal) {
+                        bestMove.row = i;
+                        bestMove.col = j;
+                        bestVal = moveVal;
+                    }
+                }
+            }
+        }
+
+        // log elapsed time to console
+        console.log(`Time passed: ${Math.round((Date.now() - startTime) / 60)}`);
+        return bestMove;
+    }
+
+    return { findBestMove };
+})();
+
 // need a game controller module
 const gameController = (function () {
     // grab any needed dom elements
     const gameTiles = document.querySelectorAll('.game-board__tile');
     const pregameSteps = document.querySelectorAll('.details-modal__pregame__content > div');
+    const difficultyButton = document.querySelector('.game-controls input[type="checkbox"]');
     const resetButton = document.querySelector('.game-controls__reset');
     const modalReset = document.querySelector('.details-modal__postgame__reset');
     const continueButton = document.querySelector('.details-modal__pregame__continue');
@@ -24,6 +227,7 @@ const gameController = (function () {
     let setupStepTracker = 1;
     let gameIsActive = true;
     let validatingLastMove = false;
+    let hardMode = false;
     let computerAsPlayer2;
     let currentPlayer;
 
@@ -56,6 +260,9 @@ const gameController = (function () {
         gameIsActive = true;
         validatingLastMove = false;
         setupStepTracker = 1;
+        hardMode = false;
+
+        difficultyButton.checked = false;
 
         // reset pregame button text
         continueButton.textContent = 'Continue';
@@ -73,53 +280,88 @@ const gameController = (function () {
     function makeComputerPlay() {
         console.log('Ok Computer!');
         currentPlayer = player2;
-        // wait a second before playing to avoid
-        // awkward timing from instant computer play
-        wait(1000).then(() => {
+        // wait briefly before playing to avoid
+        // awkward timing from near-instant computer play
+        wait(750).then(() => {
             const { board } = gameBoard;
-            const usedTiles = board.map((el, i) => !!el ? i : null);
-            const getMove = () => Math.floor(Math.random() * board.length);
-            let tileToPlay = getMove();
-            while (usedTiles.includes(tileToPlay)) {
-                console.log(`oops - can't play at ${tileToPlay}`);
+            let tileToPlay;
+
+            if (!hardMode) {
+                // computer plays random legal move
+                const usedTiles = board.map((el, i) => !!el ? i : null);
+                const getMove = () => Math.floor(Math.random() * board.length);
                 tileToPlay = getMove();
-                console.log(`rerolled as ${tileToPlay}`);
+                while (usedTiles.includes(tileToPlay)) {
+                    console.log(`oops - can't play at ${tileToPlay}`);
+                    tileToPlay = getMove();
+                    console.log(`rerolled as ${tileToPlay}`);
+                }
+
+                // if (!usedTiles.includes(tileToPlay)) {
+                //     const computerTile = document.querySelector(`[data-position="${tileToPlay}"`);
+                //     computerTile.classList.add('game-board__tile--o');
+
+                //     board[tileToPlay] = 'o';
+
+                //     return checkGameStatus(board);
+                // }
+            } else {
+                // minmax algorithm
+                const boardMatrix = [
+                    [board[0], board[1], board[2]],
+                    [board[3], board[4], board[5]],
+                    [board[6], board[7], board[8]]
+                ]
+                .map(arr => {
+                    return arr.map(el => !!el ? el : '_');
+                });
+                console.log(boardMatrix);
+                const { row, col } = minimaxAI.findBestMove(boardMatrix);
+
+                tileToPlay = (row * 3) + col;
             }
 
-            if (!usedTiles.includes(tileToPlay)) {
-                const computerTile = document.querySelector(`[data-position="${tileToPlay}"`);
-                computerTile.classList.add('game-board__tile--o');
+            const computerTile = document.querySelector(`[data-position="${tileToPlay}"`);
+            computerTile.classList.add('game-board__tile--o');
 
-                board[tileToPlay] = 'o';
+            board[tileToPlay] = 'o';
 
-                return checkGameStatus(board);
-            }
+            return checkGameStatus(board);
         });
+    }
+
+    function toggleDifficulty(e) {
+        e.stopPropagation();
+        hardMode = !hardMode;
+        console.log(`Hard mode has been ${hardMode ? 'enabled' : 'disabled'}`);
     }
 
     function toggleModal(gameOver = false) {
         const modal = document.querySelector('.details-modal');
 
         // separate modals for pre and post game
-        // TODO: set class in variable and combine blocks to avoid repetition
         if (!gameOver) {
-            modal.addEventListener('click', (e) => {
-                e.stopPropagation();
+            // if we allow the modal to be closed before all necessary information
+            // has been gathered, the game will not work.
+            // TODO: set defaults if someone clicks out of modal
 
-                if (!e.target.closest('.details-modal__pregame') || e.target.closest('.details-modal__close')) {
-                    console.log('Clicked outside of the modal - modal will close');
-                    modal.classList.remove('details-modal--open-pre');
-                } else {
-                    console.log('Clicked inside the modal - modal will not close');
-                }
-            });
+            // modal.addEventListener('click', (e) => {
+            //     e.stopPropagation();
 
-            // allow modal to close with escape key
-            document.body.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape') {
-                    modal.classList.remove('details-modal--open-pre');
-                }
-            }, { once: true });
+            //     if (!e.target.closest('.details-modal__pregame') || e.target.closest('.details-modal__close')) {
+            //         console.log('Clicked outside of the modal - modal will close');
+            //         modal.classList.remove('details-modal--open-pre');
+            //     } else {
+            //         console.log('Clicked inside the modal - modal will not close');
+            //     }
+            // });
+
+            // // allow modal to close with escape key
+            // document.body.addEventListener('keydown', (e) => {
+            //     if (e.key === 'Escape') {
+            //         modal.classList.remove('details-modal--open-pre');
+            //     }
+            // }, { once: true });
 
             modal.classList.add('details-modal--open-pre');
         }
@@ -333,8 +575,6 @@ const gameController = (function () {
 
     function handlePlayerConfiguration(e) {
         e.stopPropagation();
-        console.log(this);
-        console.log(`Alright kids, we're on step ${setupStepTracker}`);
 
         // hide current step and show next step
         function cycleSteps() {
@@ -383,6 +623,7 @@ const gameController = (function () {
     resetButton.addEventListener('click', handleReset);
     modalReset.addEventListener('click', handleReset);
     continueButton.addEventListener('click', handlePlayerConfiguration);
+    difficultyButton.addEventListener('click', toggleDifficulty);
 
     return { renderBoard, drawOnBoard, setUpGame };
 })();
