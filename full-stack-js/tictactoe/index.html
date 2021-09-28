@@ -30,14 +30,48 @@
             <div class="game-board__tile" data-position="8"></div>
         </div>
     </div>
-    <div class="postgame-modal" aria-hidden="true">
-        <div class="postgame-modal__dialog">
-            <div class="postgame-modal__dialog__header">
-                <h2>Game Results</h2>
-                <span class="postgame-modal__close" aria-hidden="true">&cross;</span>
+    <div class="details-modal" aria-hidden="true">
+        <div class="details-modal__pregame">
+            <div class="details-modal__pregame__header">
+                <h2>Game Setup</h2>
+                <span class="details-modal__close" aria-hidden="true">&cross;</span>
             </div>
-            <div class="postgame-modal__dialog__content"></div>
-            <button class="postgame-modal__dialog__reset">Reset</button>
+            <div class="details-modal__pregame__content">
+                <div class="details-modal__pregame__content--step1">
+                    <p>Welcome to a new game of Tic Tac Toe!</p>
+                    <p>How should the game be set up?</p>
+                    <div class="config-options">
+                        <input type="radio" name="players" id="pvp" value="pvp" checked>
+                        <label for="pvp">Player vs. Player</label>
+                    </div>
+                    <div class="config-options">
+                        <input type="radio" name="players" id="ai" value="ai">
+                        <label for="ai">Player vs. Computer</label>
+                    </div>
+                </div>
+                <div class="details-modal__pregame__content--step2 details-modal__pregame__content--hidden">
+                    <p>Okay, what is Player 1's name?</p>
+                    <input type="text" name="player1" value="Player 1" />
+                </div>
+                <div class="details-modal__pregame__content--step3 details-modal__pregame__content--hidden">
+                    <p>Last but not least, what is Player 2's name?</p>
+                    <input type="text" name="player2" value="Player 2" />
+                </div>
+            </div>
+            <div class="details-modal__pregame__actions">
+                <!-- TODO: Start Over button that resets pregame modal -->
+                <button class="details-modal__pregame__continue">Continue</button>
+            </div>
+        </div>
+        <div class="details-modal__postgame">
+            <div class="details-modal__postgame__header">
+                <h2>Game Results</h2>
+                <span class="details-modal__close" aria-hidden="true">&cross;</span>
+            </div>
+            <div class="details-modal__postgame__content"></div>
+            <div class="details-modal__postgame__actions">
+                <button class="details-modal__postgame__reset">Reset</button>
+            </div>
         </div>
     </div>
     <script src="script.js"></script>

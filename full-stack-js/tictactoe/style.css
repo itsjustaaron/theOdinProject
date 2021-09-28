@@ -97,6 +97,7 @@ body {
     text-transform: uppercase;
 }
 
+/* style default button as "reset" button */
 button {
     padding: 8px 24px;
     border: 2px solid #fa5f6f;
@@ -109,11 +110,11 @@ button {
     transition: all .2s ease-out;
 }
 
-.game-controls__reset:hover {
+.game-controls__reset:hover,
+.details-modal__postgame__reset:hover {
     background-color: #fa5f6f;
     color: #161617;
 }
-
 
 .container {
     position: relative;
@@ -136,6 +137,8 @@ canvas {
     background-color: #D8D4F2;
     border-radius: 16px;
     box-shadow: 4px 8px 16px 0px rgba(22, 22, 23, 0.8);
+    position:relative;
+    z-index: 1;
 }
 
 .game-board__tile {
@@ -144,7 +147,7 @@ canvas {
     border: 1px solid #161617;
     position: relative;
     cursor: pointer;
-    z-index: 1;
+    /* z-index: 1; */
 }
 
 .game-board__tile:nth-child(3n) {
@@ -193,7 +196,7 @@ all of the game piece placements are magic numbers
     content: "○";
 }
 
-.postgame-modal:before {
+.details-modal:before {
     content: "";
     display: none;
     background: rgba(0, 0, 0, 0.6);
@@ -205,22 +208,24 @@ all of the game piece placements are magic numbers
     z-index: 11;
 }
 
-.postgame-modal--open:before {
+.details-modal--open-pre:before,
+.details-modal--open-post:before {
     display: block;
 }
 
-.postgame-modal--open .postgame-modal__dialog {
+.details-modal--open-pre .details-modal__pregame,
+.details-modal--open-post .details-modal__postgame {
     transform: translate(-50%, -50%);
 }
 
-.postgame-modal__dialog {
+.details-modal > div {
     width: 600px;
-    height: 250px;
+    min-height: 250px;
     position: fixed;
     left: 50%;
     top: 50%;
     transform: translate(-50%, 1000%);
-    transition: transform .2s ease-out;
+    transition: transform .2s ease-in-out;
     z-index: 12;
     background: #fefefd;
     border-radius: 16px;
@@ -232,7 +237,8 @@ all of the game piece placements are magic numbers
     gap: 20px;
 }
 
-.postgame-modal__dialog__header {
+.details-modal__pregame__header,
+.details-modal__postgame__header {
     width: 100%;
     background-color: hsl(0, 0%, 93%);
     margin-bottom: 10px;
@@ -241,13 +247,18 @@ all of the game piece placements are magic numbers
     position: relative;
 }
 
-.postgame-modal__dialog__header h2 {
+.details-modal__pregame__header {
+    border-color: #2081C3;
+}
+
+.details-modal__pregame__header h2,
+.details-modal__postgame__header h2 {
     font-size: 24px;
     text-align: center;
     padding: 16px;
 }
 
-.postgame-modal__close {
+.details-modal__close {
     position: absolute;
     right: 0;
     top: 0;
@@ -257,20 +268,62 @@ all of the game piece placements are magic numbers
     cursor: pointer;
 }
 
-.postgame-modal__dialog__content {
+.details-modal__pregame__content {
+    width: 100%;
+    padding: 0 30px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.details-modal__pregame__content p {
+    text-align: center;
+}
+
+.details-modal__pregame__content--step1 .config-options {
+    margin: 10px auto 0;
+    text-align: left;
+}
+
+.details-modal__pregame__content input[type="text"] {
+    width: 100%;
+    margin-top: 8px;
+    border-radius: 8px;
+    border: 1px solid #161617;
+    padding: 4px 12px;
+}
+
+.details-modal__pregame__content--step1 .config-options:last-child {
+    margin-top: 0;
+}
+
+.details-modal__pregame__content--hidden {
+    display: none;
+}
+
+.details-modal__pregame__continue {
+    border-color: #2081C3;
+}
+
+.details-modal__pregame__continue:hover {
+    background-color: #2081C3;
+}
+
+.details-modal__postgame__content {
     text-align: center;
     font-weight: 600;
 }
 
-.postgame-modal__dialog__content p.x {
+.details-modal__postgame__content p.x {
     color: #5eceb3;
 }
 
-.postgame-modal__dialog__content p.o {
+.details-modal__postgame__content p.o {
     color: #fa5f6f;
 }
 
-.postgame-modal__dialog__reset {
+.details-modal__pregame__actions,
+.details-modal__postgame__actions {
     margin-bottom: 20px;
 }
 
