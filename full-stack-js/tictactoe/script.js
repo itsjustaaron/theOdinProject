@@ -18,7 +18,11 @@ const gameController = (function () {
     // dom manipulation logic
     const gameTiles = document.querySelectorAll('.game-board__tile');
     const resetButton = document.querySelector('.game-controls__reset');
+    const modalReset = document.querySelector('.postgame-modal__dialog__reset');
     let currentPlayer;
+
+    // wait helper function
+    const wait = (amount = 0) => new Promise(resolve => setTimeout(resolve, amount));
 
     // need a function to render the
     // game board to the dom
@@ -27,7 +31,33 @@ const gameController = (function () {
         gameTiles.forEach((tile, i) => tile.classList.add(`game-board__tile--${placements[i]}`));
     }
 
-    function traceWinner(lineType, offset) {
+    function toggleModal() {
+        // hard code opening for now
+        const modal = document.querySelector('.postgame-modal');
+
+        // if user clicks outside of modal or clicks close button, close modal
+        modal.addEventListener('click', (e) => {
+            e.stopPropagation();
+
+            if (!e.target.closest('.postgame-modal__dialog') || e.target.closest('.postgame-modal__close')) {
+                console.log('Clicked outside of the modal - modal will close');
+                modal.classList.remove('postgame-modal--open');
+            } else {
+                console.log('Clicked inside the modal - modal will not close');
+            }
+        });
+
+        // allow modal to close with escape key
+        document.body.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                modal.classList.remove('postgame-modal--open');
+            }
+        }, { once: true });
+
+        modal.classList.add('postgame-modal--open');
+    }
+
+    function drawOnBoard(lineType, offset) {
         // if no canvas exists in the dom
         if (!document.querySelector('canvas')) {
             // create canvas and set dimensions to match board
@@ -60,6 +90,12 @@ const gameController = (function () {
                     ctx.moveTo(x, y);
                     ctx.lineTo(x, 440);
                     break;
+                case 'tie':
+                    ctx.moveTo(10, 10);
+                    ctx.lineTo(440, 440);
+                    ctx.moveTo(440, 10);
+                    ctx.lineTo(10, 440);
+                    break;
                 default:
                     // for diagonals - determine line direction with offset
                     // (0-right or 2-left)
@@ -75,6 +111,23 @@ const gameController = (function () {
 
             const gameContainer = document.querySelector('.container');
             gameContainer.insertBefore(canvas, document.querySelector('.game-board'));
+
+            // write up outcome of game
+            // TODO: extract to function
+            const modalContent = document.querySelector('.postgame-modal__dialog__content');
+            let modalText;
+
+            if (lineType !== 'tie') {
+                modalText = `<p class="${currentPlayer?.marker}">${currentPlayer?.name} wins!</p>`;
+            } else {
+                modalText = `<p>It's a tie...</p>`;
+            }
+
+            modalText += `<p>Play again?</p>`;
+
+            modalContent.innerHTML = modalText;
+
+            wait(1500).then(() => toggleModal());
         }
     }
 
@@ -122,8 +175,14 @@ const gameController = (function () {
             }
 
             Object.freeze(board);
-            traceWinner(winType, lineStart);
+            drawOnBoard(winType, lineStart);
             return console.log(`Game over! ${currentPlayer.name} wins!`);
+        }
+
+        if (!winner && board.filter(el => !!el).length === 9) {
+            // It's a tie!
+            drawOnBoard('tie', 0);
+            return console.log("If at first you don't succeed, tie, try again...");
         }
 
         return console.log("continue playing");
@@ -136,7 +195,7 @@ const gameController = (function () {
 
         const { position } = e.target.dataset;
         if (this.classList.length > 1) {
-            return console.log("tile already in use");
+            return console.log("tile already in use", this);
         }
 
         this.classList.add(`game-board__tile--${currentPlayer.gamePiece}`);
@@ -152,17 +211,23 @@ const gameController = (function () {
 
         console.log('resetting game');
 
-        gameBoard.clearBoard();
+        gameBoard.board = gameBoard.clearBoard();
         // remove any game pieces currently on the board
         gameTiles.forEach(tile => tile.className = 'game-board__tile');
         // clear the canvas
         if (document.querySelector('canvas')) {
             document.querySelector('canvas').remove();
         }
+        // clear current player setting
+        currentPlayer = undefined;
+        // hide modal
+        document.querySelector('.postgame-modal').classList.remove('postgame-modal--open');
     }
 
     resetButton.addEventListener('click', handleReset);
+    modalReset.addEventListener('click', handleReset);
 
+    // gameTiles.forEach(tile => tile.addEventListener('click', handleGameplay, {once: true}));
     gameTiles.forEach(tile => tile.addEventListener('click', handleGameplay));
         // console.log(this);
         // console.dir(this);
@@ -171,7 +236,7 @@ const gameController = (function () {
     //     // }
     // }));
 
-    return { renderBoard, traceWinner };
+    return { renderBoard, drawOnBoard };
 })();
 
 // gameController.renderBoard(gameBoard.board);
@@ -184,7 +249,6 @@ function Player(marker, playerName) {
     return { gamePiece, name };
 }
 
+// global logic
 const player1 = Player('x');
 const player2 = Player('o');
-
-// global logic

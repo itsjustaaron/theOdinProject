@@ -81,6 +81,40 @@ body {
     color: #161617;
 }
 
+.header {
+    width: 100%;
+    height: 72px;
+    padding: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #483535;
+    box-shadow: 0 2px 8px 0 rgba(22, 22, 23, 0.8);
+}
+
+.header h1 {
+    font-size: 24px;
+    text-transform: uppercase;
+}
+
+button {
+    padding: 8px 24px;
+    border: 2px solid #fa5f6f;
+    border-radius: 24px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: inherit;
+    background-color: white;
+    cursor: pointer;
+    transition: all .2s ease-out;
+}
+
+.game-controls__reset:hover {
+    background-color: #fa5f6f;
+    color: #161617;
+}
+
+
 .container {
     position: relative;
 }
@@ -99,6 +133,9 @@ canvas {
     padding: 20px;
     display: grid;
     grid-template: repeat(3, 1fr) / repeat(3, 1fr);
+    background-color: #D8D4F2;
+    border-radius: 16px;
+    box-shadow: 4px 8px 16px 0px rgba(22, 22, 23, 0.8);
 }
 
 .game-board__tile {
@@ -107,7 +144,7 @@ canvas {
     border: 1px solid #161617;
     position: relative;
     cursor: pointer;
-    /* z-index: 1; */
+    z-index: 1;
 }
 
 .game-board__tile:nth-child(3n) {
@@ -126,6 +163,11 @@ canvas {
     border-bottom: none;
 }
 
+/*
+use psuedoelements to add game pieces
+all of the game piece placements are magic numbers
+- trial and error until they looked centered
+*/
 .game-board__tile::before {
     display: block;
     position: absolute;
@@ -143,7 +185,7 @@ canvas {
     content: "⨯";
     font-size: 200px;
     top: 0;
-    transform: translate(-48%, -76%); /* magic numbers */
+    transform: translate(-48%, -76%);
 }
 
 .game-board__tile--o::before {
@@ -151,10 +193,81 @@ canvas {
     content: "○";
 }
 
-/*
-O color: #fa5f6f; content: "○";
-X color: #5eceb3; content: "⨯";
+.postgame-modal:before {
+    content: "";
+    display: none;
+    background: rgba(0, 0, 0, 0.6);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 11;
+}
 
-potential colors for board #b2b5a5 & #483535
+.postgame-modal--open:before {
+    display: block;
+}
+
+.postgame-modal--open .postgame-modal__dialog {
+    transform: translate(-50%, -50%);
+}
+
+.postgame-modal__dialog {
+    width: 600px;
+    height: 250px;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, 1000%);
+    transition: transform .2s ease-out;
+    z-index: 12;
+    background: #fefefd;
+    border-radius: 16px;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.postgame-modal__dialog__header {
+    width: 100%;
+    background-color: hsl(0, 0%, 93%);
+    margin-bottom: 10px;
+    border-radius: 8px 8px 0 0;
+    border-top: 8px solid #6E44FF;
+    position: relative;
+}
+
+.postgame-modal__dialog__header h2 {
+    font-size: 24px;
+    text-align: center;
+    padding: 16px;
+}
+
+.postgame-modal__close {
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding-top: 5px;
+    padding-right: 14px;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.postgame-modal__dialog__content {
+    /* no empty selectors! */
+    text-align: center;
+}
+
+.postgame-modal__dialog__reset {
+    margin-bottom: 20px;
+}
+
+/* colors to consider for additional UI elements:
+color: #2374AB; #2081C3;
+color: #d1ac00; #f1d302; #D2BF55; #b2b5a5;
+color: #6E44FF; #b388eb; #D8D4F2;
 */
-

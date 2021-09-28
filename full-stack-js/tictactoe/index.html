@@ -12,13 +12,12 @@
 </head>
 <body>
     <div class="header">
-        <h1>Tic Tac Toe Board</h1>
+        <h1>Tic Tac Toe</h1>
         <div class="game-controls">
-            <button class="game-controls__reset">RESET</button>
+            <button class="game-controls__reset">Reset</button>
         </div>
     </div>
     <div class="container">
-        <!-- <canvas width="450" height="450"></canvas> -->
         <div class="game-board">
             <div class="game-board__tile" data-position="0"></div>
             <div class="game-board__tile" data-position="1"></div>
@@ -29,6 +28,16 @@
             <div class="game-board__tile" data-position="6"></div>
             <div class="game-board__tile" data-position="7"></div>
             <div class="game-board__tile" data-position="8"></div>
+        </div>
+    </div>
+    <div class="postgame-modal" aria-hidden="true">
+        <div class="postgame-modal__dialog">
+            <div class="postgame-modal__dialog__header">
+                <h2>Game Results</h2>
+                <span class="postgame-modal__close" aria-hidden="true">&cross;</span>
+            </div>
+            <div class="postgame-modal__dialog__content"></div>
+            <button class="postgame-modal__dialog__reset">Reset</button>
         </div>
     </div>
     <script src="script.js"></script>
