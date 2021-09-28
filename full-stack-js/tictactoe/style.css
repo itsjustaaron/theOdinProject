@@ -258,8 +258,16 @@ all of the game piece placements are magic numbers
 }
 
 .postgame-modal__dialog__content {
-    /* no empty selectors! */
     text-align: center;
+    font-weight: 600;
+}
+
+.postgame-modal__dialog__content p.x {
+    color: #5eceb3;
+}
+
+.postgame-modal__dialog__content p.o {
+    color: #fa5f6f;
 }
 
 .postgame-modal__dialog__reset {
