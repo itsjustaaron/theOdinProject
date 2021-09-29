@@ -200,14 +200,16 @@ const minimaxAI = (function () {
 })();
 
 const gameController = (function () {
+    const $ = el => document.querySelector(el);
+    const $$ = el => document.querySelectorAll(el);
     // grab any needed dom elements
-    const gameTiles = document.querySelectorAll('.game-board__tile');
-    const pregameSteps = document.querySelectorAll('.details-modal__pregame__content > div');
-    const difficultyButton = document.querySelector('.game-controls input[type="checkbox"]');
-    const resetButton = document.querySelector('.game-controls__reset');
-    const modalReset = document.querySelector('.details-modal__postgame__reset');
-    const continueButton = document.querySelector('.details-modal__pregame__continue');
-    const difficultyContainer = document.querySelector('.game-controls__toggle');
+    const gameTiles = $$('.game-board__tile');
+    const pregameSteps = $$('.details-modal__pregame__content > div');
+    const difficultyButton = $('.game-controls input[type="checkbox"]');
+    const resetButton = $('.game-controls__reset');
+    const modalReset = $('.details-modal__postgame__reset');
+    const continueButton = $('.details-modal__pregame__continue');
+    const difficultyContainer = $('.game-controls__toggle');
 
     // game options - TODO: refactor into object
     let setupStepTracker = 1;
@@ -235,8 +237,8 @@ const gameController = (function () {
             tile.addEventListener('click', handleGameplay,);
         });
         // clear the canvas
-        if (document.querySelector('canvas')) {
-            document.querySelector('canvas').remove();
+        if ($('canvas')) {
+            $('canvas').remove();
         }
 
         // reset current gameplay settings
@@ -254,7 +256,7 @@ const gameController = (function () {
         continueButton.textContent = 'Continue';
 
         // remove postgame modal (if open)
-        document.querySelector('.details-modal').classList.remove('details-modal--open-post');
+        $('.details-modal').classList.remove('details-modal--open-post');
         //  make sure pregame steps are reset and open pregame modal
         pregameSteps.forEach((step, i) => {
             // we want to restart the modal at step1 every time
@@ -268,7 +270,7 @@ const gameController = (function () {
         currentPlayer = player2;
         // wait briefly before playing to avoid
         // awkward timing from near-instant computer play
-        wait(750).then(() => {
+        wait(500).then(() => {
             const { board } = gameBoard;
             let tileToPlay;
 
@@ -277,6 +279,7 @@ const gameController = (function () {
                 const usedTiles = board.map((el, i) => !!el ? i : null);
                 const getMove = () => Math.floor(Math.random() * board.length);
                 tileToPlay = getMove();
+                console.log(usedTiles);
                 while (usedTiles.includes(tileToPlay)) {
                     console.log(`oops - can't play at ${tileToPlay}`);
                     tileToPlay = getMove();
@@ -298,7 +301,7 @@ const gameController = (function () {
                 tileToPlay = (row * 3) + col;
             }
 
-            const computerTile = document.querySelector(`[data-position="${tileToPlay}"`);
+            const computerTile = $(`[data-position="${tileToPlay}"`);
             computerTile.classList.add('game-board__tile--o');
 
             board[tileToPlay] = 'o';
@@ -314,7 +317,7 @@ const gameController = (function () {
     }
 
     function toggleModal(gameOver = false) {
-        const modal = document.querySelector('.details-modal');
+        const modal = $('.details-modal');
 
         // separate modals for pre and post game
         if (!gameOver) {
@@ -366,11 +369,16 @@ const gameController = (function () {
 
     function drawOnBoard(lineType, offset) {
         // make sure there is no existing canvas
-        if (!document.querySelector('canvas')) {
+        if (!$('canvas')) {
             // create canvas and set dimensions to match board
+            // mobile needs a smaller canvas than tablet/desktop
             const canvas = document.createElement('canvas');
-            canvas.width = 450;
-            canvas.height = 450;
+            const canvasDims = document.body.clientWidth < 768 ? 270 : 450;
+            canvas.width = canvasDims;
+            canvas.height = canvasDims;
+
+            let paddingOffset = +(window.getComputedStyle($('.game-board'), null).getPropertyValue('padding-left').match(/\d*/)[0]) / 2;
+
 
             // create canvas context and draw line
             // showing the path to victory
@@ -384,42 +392,42 @@ const gameController = (function () {
             // determine type and position of line to draw
             switch (lineType) {
                 case 'row':
-                    y = 75 + (150 * offset);
-                    x = 10;
+                    y = (canvasDims / 6) + ((canvasDims / 3) * offset);
+                    x = paddingOffset;
                     ctx.moveTo(x, y);
-                    ctx.lineTo(440, y);
+                    ctx.lineTo((canvasDims - paddingOffset), y);
                     break;
                 case 'col':
-                    x = 75 + (150 * offset);
-                    y = 10;
+                    x = (canvasDims / 6) + ((canvasDims / 3) * offset);
+                    y = paddingOffset;
                     ctx.moveTo(x, y);
-                    ctx.lineTo(x, 440);
+                    ctx.lineTo(x, (canvasDims - paddingOffset));
                     break;
                 case 'tie':
-                    ctx.moveTo(10, 10);
-                    ctx.lineTo(440, 440);
-                    ctx.moveTo(440, 10);
-                    ctx.lineTo(10, 440);
+                    ctx.moveTo(paddingOffset, paddingOffset);
+                    ctx.lineTo((canvasDims - paddingOffset), (canvasDims - paddingOffset));
+                    ctx.moveTo((canvasDims - paddingOffset), paddingOffset);
+                    ctx.lineTo(paddingOffset, (canvasDims - paddingOffset));
                     break;
                 default:
                     // for diagonals - determine line direction with offset
                     // (0-right or 2-left)
-                    x = offset ? 440 : 10;
-                    y = 10;
+                    x = offset ? (canvasDims - paddingOffset) : paddingOffset;
+                    y = paddingOffset;
                     ctx.moveTo(x, y);
                     // now use opposite x value for line end
-                    x = offset ? 10 : 440;
-                    ctx.lineTo(x, 440);
+                    x = offset ? paddingOffset : (canvasDims - paddingOffset);
+                    ctx.lineTo(x, (canvasDims - paddingOffset));
             }
 
             ctx.stroke();
 
-            const gameContainer = document.querySelector('.container');
-            gameContainer.insertBefore(canvas, document.querySelector('.game-board'));
+            const gameContainer = $('.container');
+            gameContainer.insertBefore(canvas, $('.game-board'));
 
             // write up outcome of game
             // TODO: extract to function
-            const modalContent = document.querySelector('.details-modal__postgame__content');
+            const modalContent = $('.details-modal__postgame__content');
             let modalText;
 
             if (lineType !== 'tie') {
@@ -550,13 +558,13 @@ const gameController = (function () {
 
         // hide current step and show next step
         function cycleSteps() {
-            document.querySelector(`.details-modal__pregame__content--step${setupStepTracker++}`).classList.add('details-modal__pregame__content--hidden');
-            document.querySelector(`.details-modal__pregame__content--step${setupStepTracker}`).classList.remove('details-modal__pregame__content--hidden');
+            $(`.details-modal__pregame__content--step${setupStepTracker++}`).classList.add('details-modal__pregame__content--hidden');
+            $(`.details-modal__pregame__content--step${setupStepTracker}`).classList.remove('details-modal__pregame__content--hidden');
         }
 
         if (setupStepTracker === 1) {
             // see which game mode was selected and set options accordingly
-            const gameMode = document.querySelector('input[type="radio"]:checked');
+            const gameMode = $('input[type="radio"]:checked');
             computerAsPlayer2 = gameMode.value === 'ai';
             console.log(`The computer ${computerAsPlayer2 ? 'will' : 'will not'} play as player 2`);
 
@@ -570,7 +578,7 @@ const gameController = (function () {
 
         // assign player 1
         if (setupStepTracker === 2) {
-            const nameOfPlayer = document.querySelector('input[name="player1"]').value;
+            const nameOfPlayer = $('input[name="player1"]').value;
             player1 = Player('x', nameOfPlayer);
 
             if (!computerAsPlayer2) {
@@ -586,7 +594,7 @@ const gameController = (function () {
 
         // assign player 2
         if (setupStepTracker === 3) {
-            const nameOfPlayer = document.querySelector('input[name="player2"]').value;
+            const nameOfPlayer = $('input[name="player2"]').value;
             player2 = Player('o', nameOfPlayer);
 
             return this.closest('.details-modal').classList.remove('details-modal--open-pre');
