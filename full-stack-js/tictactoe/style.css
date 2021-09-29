@@ -375,10 +375,6 @@ all of the game piece placements are magic numbers
     padding: 4px 12px;
 }
 
-.details-modal__pregame__content--step1 .config-options:last-child {
-    margin-top: 0;
-}
-
 .details-modal__pregame__content--hidden {
     display: none;
 }
@@ -484,6 +480,10 @@ all of the game piece placements are magic numbers
     .details-modal__pregame__header h2,
     .details-modal__postgame__header h2 {
         font-size: 24px;
+    }
+
+    .details-modal__pregame__content--step1 .config-options:last-child {
+        margin-top: 0;
     }
 }
 
