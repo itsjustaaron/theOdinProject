@@ -124,6 +124,8 @@ nav {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
+    flex: 1;
+    gap: 20px;
 }
 
 .restaurant__hero {
@@ -135,7 +137,9 @@ nav {
 
 .restaurant__content {
     border: 1px solid #161617;
-    border-radius: 4px;
+    border-radius: 16px;
+    padding: 16px 32px;
+    flex-grow: 1;
 }
 
 .restaurant__content__heading,
@@ -145,8 +149,23 @@ nav {
     font-weight: 600;
     box-sizing: content-box;
     border-bottom: 3px solid #161617;
-    padding: 8px;
+    padding: 8px 0;
     margin-bottom: 8px;
+}
+
+.restaurant__content__heading {
+    border-color: #10abc6;
+}
+
+.restaurant__menu__heading {
+    border-color: #cf7446;
+}
+
+.restaurant__contact__heading {
+    border-color: #4D8B31; /* #60935D #3E885B */
+    /* border-color: #976391; */
+    /* border-color: #E15A97; #D90368 */
+    /* border-color: #6B0504; */
 }
 
 .restaurant_content__copy {

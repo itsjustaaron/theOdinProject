@@ -10,10 +10,13 @@ export default function renderMenu() {
     const restaurant = document.createElement('div');
     restaurant.classList.add('restaurant');
 
+    const menuList = document.createElement('div');
+    menuList.classList.add('restaurant__menu');
+
     const menuTitle = document.createElement('h2');
     menuTitle.classList.add('restaurant__menu__heading');
     menuTitle.textContent = 'Restaurant Name';
-    restaurant.appendChild(menuTitle);
+    menuList.appendChild(menuTitle);
 
     menu.forEach(item => {
         const { name, description, price } = item;
@@ -23,8 +26,10 @@ export default function renderMenu() {
             <p class="restaurant__menu__item--primary">${name}<span class="restaurant__menu__item--price">${price}</span></p>
             <p class="restaurant__menu__item--secondary">${description}</p>
         `;
-        restaurant.appendChild(menuItem);
+        menuList.appendChild(menuItem);
     });
+
+    restaurant.appendChild(menuList);
 
     return restaurant;
 }

@@ -20,7 +20,7 @@ export default function renderRestaurant() {
 
     const restaurantCopy = document.createElement('p');
     restaurantCopy.classList.add('restaurant__content__copy');
-    restaurantCopy.textContent = 'Details about the restaurant.';
+    restaurantCopy.textContent = 'Details about the restaurant. Lorem ipsum dolor sit, amet consectetur adipisicing elit. Officiis vero tempora, neque consequatur iste mollitia veniam quam ratione accusamus, id esse. Iste totam modi eos officia optio velit possimus praesentium.';
     restaurantContent.appendChild(restaurantCopy);
 
     restaurant.appendChild(restaurantContent);
