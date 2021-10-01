@@ -1,0 +1,124 @@
+/* css reset */
+/* Box sizing rules */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Remove default margin */
+body,
+h1,
+h2,
+h3,
+h4,
+p,
+figure,
+blockquote,
+dl,
+dd {
+  margin: 0;
+}
+
+/* Remove list styles on ul, ol elements with a list role, which suggests default styling will be removed */
+ul[role='list'],
+ol[role='list'] {
+  list-style: none;
+}
+
+/* Set core root defaults */
+html:focus-within {
+  scroll-behavior: smooth;
+}
+
+/* Set core body defaults */
+body {
+  min-height: 100vh;
+  text-rendering: optimizeSpeed;
+  line-height: 1.5;
+}
+
+/* A elements that don't have a class get default styles */
+a:not([class]) {
+  text-decoration-skip-ink: auto;
+}
+
+/* Make images easier to work with */
+img,
+picture {
+  max-width: 100%;
+  display: block;
+}
+
+/* Inherit fonts for inputs and buttons */
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+/* Remove all animations, transitions and smooth scroll for people that prefer not to see them */
+@media (prefers-reduced-motion: reduce) {
+  html:focus-within {
+   scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* begin restaurant styles */
+body {
+    font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+    color: #161617;
+}
+
+#content {
+    width: 100%;
+    height: 100vh;
+    padding: 20px 60px;
+    background-color: lightgray;
+}
+
+.restaurant {
+    border: 1px solid #161617;
+    border-radius: 8px;
+    margin: 10% auto;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.restaurant__hero {
+    max-width: 60%;
+    height: auto;
+    border: 1px solid #161617;
+    border-radius: 16px;
+}
+
+.restaurant__content {
+    border: 1px solid #161617;
+    border-radius: 4px;
+}
+
+.restaurant__content__heading {
+    font-size: 20px;
+    font-weight: 600;
+    box-sizing: content-box;
+    border-bottom: 3px solid #161617;
+    padding: 8px;
+    margin-bottom: 8px;
+}
+
+.restaurant_content__copy {
+    font-size: 14px;
+}
