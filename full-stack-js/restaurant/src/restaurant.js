@@ -25,5 +25,5 @@ export default function renderRestaurant() {
 
     restaurant.appendChild(restaurantContent);
 
-    container.appendChild(restaurant);
+    return restaurant;
 }
