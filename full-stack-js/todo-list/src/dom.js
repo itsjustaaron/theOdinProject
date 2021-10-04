@@ -1,4 +1,4 @@
-const domController = (function () {
+const DomController = (function () {
     function displayCategories(categories) {
         const categoryList = document.createElement('ul');
         categoryList.classList.add('notepad__categories');
@@ -20,6 +20,7 @@ const domController = (function () {
             let listHTML = '';
 
             category.notes.forEach(note => {
+                // TODO: add checkbox & label
                 listHTML += `<li data-id="${note.id}">${note.title}</li>`;
             });
 
@@ -31,3 +32,5 @@ const domController = (function () {
 
     return { displayCategories, displayNotes };
 })();
+
+export default DomController;

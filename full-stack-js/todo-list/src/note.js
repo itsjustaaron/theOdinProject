@@ -2,7 +2,8 @@ const NotesController = (function () {
     const categories = [ { category: 'Random', notes: [], id: 1 } ];
     const { notes } = categories.find(cat => cat.id === 1);
 
-    let lastID = 1;
+    let lastCategoryId = 1;
+    let lastNoteId = 0;
 
     // load a note
     function loadNote(id) {
@@ -12,12 +13,14 @@ const NotesController = (function () {
     // save or edit a note
     function saveNote(note, noteIsNew = true) {
         if (noteIsNew) {
-            note.id = ++lastID;
+            note.id = ++lastNoteId;
             notes.push(note);
         } else {
             const noteIndex = notes.findIndex(n => n.id === note.id);
             notes.splice(noteIndex, 1, note);
         }
+
+        return console.log(notes);
     }
 
     // delete a note
