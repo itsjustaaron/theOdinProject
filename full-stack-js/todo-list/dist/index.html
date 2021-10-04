@@ -11,7 +11,59 @@
     <title>Sh💩t To Do</title>
 </head>
 <body>
-    <div id="content">
+    <div class="container">
+        <div class="notepad">
+            <div class="notepad__header">
+                <h1 class="notepad__header__title">Sh💩t To Do</h1>
+                <div class="notepad__header__controls">
+                    <button>＋</button>
+                    <button>⚙️</button>
+                </div>
+            </div>
+            <!-- <div class="notepad__categories"></div> -->
+            <div class="notepad__notes">
+                <ul class="notepad__notes__list">
+                    <li><input type="checkbox" name="todo1"><label for="todo1">I'm a todo</label></li>
+                    <li><input type="checkbox" name="todo2"><label for="todo2">I'm a todo</label></li>
+                    <li><input type="checkbox" name="todo3"><label for="todo3">I'm a todo</label></li>
+                </ul>
+            </div>
+            <div class="notepad__body">
+                <!-- existing note -->
+                <div class="notepad__body__note">
+                    <h2>Name of To-Do Item</h2>
+                    <div class="notepad__body__details">
+                        <div class="notepad__body__details--priority">Priority: High</div>
+                        <div class="notepad__body__details--date">Due: 06/09/22</div>
+                    </div>
+                    <p>I am a description of the item on the to-do list!</p>
+                </div>
+                <!-- new note -->
+                <div class="notepad__body__new-note">
+                    <form action="#">
+                        <label for="title">Title:</label>
+                        <input type="text" name="title" placeholder="Do this thing" required>
+                        <div class="share-row">
+                            <div>
+                                <label for="priority">Priority:</label>
+                                <select name="priority">
+                                    <option value="">-- set a priority --</option>
+                                    <option value="high">High</option>
+                                    <option value="medium">Medium</option>
+                                    <option value="low">Low</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="dueDate">Due:</label>
+                                <input type="date" name="dueDate">
+                            </div>
+                        </div>
+                        <textarea name="description" cols="30" rows="6" placeholder="What do you need to do?"></textarea>
+                        <button type="submit">Save</button>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
     <script src="main.js"></script>
 </body>

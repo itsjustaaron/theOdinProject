@@ -15,7 +15,7 @@
   \**********************/
 /***/ (() => {
 
-eval("console.log('hello world');\n\n//# sourceURL=webpack://todo-list/./src/index.js?");
+eval("console.log('hello world');\n\nconst datePicker = document.querySelector('input[type=\"date\"]');\nconst today = new Date();\nconst [month, day, year] = today.toLocaleDateString().split('/');\nconst formattedDate = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;\ndatePicker.value = formattedDate;\n\n//# sourceURL=webpack://todo-list/./src/index.js?");
 
 /***/ })
 
