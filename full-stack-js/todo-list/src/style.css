@@ -147,6 +147,50 @@ button + button {
     grid-area: notes;
 }
 
+.notepad__categories {
+    width: 100%;
+    height: 48px;
+    padding: 16px 0;
+    text-align: center;
+    line-height: 1;
+    border-bottom: 1px solid #23232A;
+    position: relative;
+    cursor: pointer;
+}
+
+.notepad__categories::after {
+    content: '▼';
+    position: absolute;
+    top: 50%;
+    right: 5%;
+    transform: translateY(-50%);
+    transition: .15s ease-in;
+}
+
+.notepad__categories--expanded::after {
+    transform: translateY(-50%) rotate(180deg);
+}
+
+.notepad__categories ul {
+    display: none;
+}
+
+.notepad__categories.notepad__categories--expanded ul {
+    display: block;
+    width: 100%;
+    list-style: none;
+    text-align: left;
+    padding-left: 0;
+    z-index: 2;
+    background-color: #f2f2f2;
+}
+
+.notepad__categories__list li {
+    padding: 8px;
+    cursor: pointer;
+    border-bottom: 1px solid #23232A;
+}
+
 .notepad__notes__list {
     list-style: none;
     font-weight: bold;
@@ -223,6 +267,10 @@ input:focus-within,
 select:focus,
 textarea:focus-within {
     border-color: #23232A;
+}
+
+textarea {
+    resize: none;
 }
 
 form button {

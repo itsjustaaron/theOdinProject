@@ -4,6 +4,7 @@ const NotesController = (function () {
 
     let lastCategoryId = 1;
     let lastNoteId = 0;
+    let activeCategory = 'Random';
 
     // load a note
     function loadNote(id) {
@@ -34,7 +35,19 @@ const NotesController = (function () {
         return localStorage?.setItem('notepad', categories);
     }
 
-    return { loadNote, saveNote, removeNote };
+    function updateActiveCategory(categoryName) {
+        activeCategory = categoryName;
+    }
+
+    function getActiveCategory() {
+        return categories.find(({ category }) => category === activeCategory);
+    }
+
+    function getAllCategories() {
+        return categories;
+    }
+
+    return { loadNote, saveNote, removeNote, updateActiveCategory, getActiveCategory, getAllCategories };
 })();
 
 export default NotesController;

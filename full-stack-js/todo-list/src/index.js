@@ -22,13 +22,41 @@ function handleSavingNote(e) {
 
     // save note, then update dom
     NotesController.saveNote(newNote, !newNote.id);
-    // TODO: need to get right category to pass to function
-    // DomController.displayNotes()
+
+    DomController.displayNotes(NotesController.getActiveCategory());
 }
 
 function handleDeletingNote(e) {
     e.stopPropagation();
 }
 
+function handleCategoryMenu(e) {
+    e.stopPropagation();
+    this.classList.toggle('notepad__categories--expanded');
+}
+
+function handleCategorySelection(e) {
+    e.stopPropagation();
+    console.log(this);
+    const { textContent } = this;
+    if (!textContent?.startsWith('+')) {
+        NotesController.updateActiveCategory(textContent);
+        DomController.displayNotes(NotesController.getActiveCategory());
+    } else {
+        // toggle add new category
+    }
+
+}
+
+DomController.displayCategories(NotesController.getAllCategories());
+
 const form = document.querySelector('form');
 form.addEventListener('submit', handleSavingNote);
+
+const categoryDropdown = document.querySelector('.notepad__categories');
+categoryDropdown.addEventListener('click', handleCategoryMenu);
+
+const categoryList = document.querySelectorAll('.notepad__categories__list li');
+categoryList.forEach(li => {
+    li.addEventListener('click', handleCategorySelection);
+});

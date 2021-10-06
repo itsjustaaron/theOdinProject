@@ -1,7 +1,9 @@
 const DomController = (function () {
+    const notesContainer = document.querySelector('.notepad__notes');
+    const categoryContainer = document.querySelector('.notepad__categories');
+
     function displayCategories(categories) {
-        const categoryList = document.createElement('ul');
-        categoryList.classList.add('notepad__categories');
+        const categoryList = document.querySelector('.notepad__categories__list');
 
         categories.forEach(category => {
             const listItem = document.createElement('li');
@@ -10,7 +12,12 @@ const DomController = (function () {
             categoryList.appendChild(listItem);
         });
 
-        return categoryList;
+        const lastListItem = document.createElement('li');
+        lastListItem.textContent = '+ Add New Category';
+        categoryList.appendChild(lastListItem);
+
+        categoryContainer.removeChild(categoryContainer.lastElementChild);
+        categoryContainer.appendChild(categoryList);
     }
 
     function displayNotes(category) {
@@ -19,14 +26,25 @@ const DomController = (function () {
             noteList.classList.add('notepad__notes__list');
             let listHTML = '';
 
-            category.notes.forEach(note => {
-                // TODO: add checkbox & label
-                listHTML += `<li data-id="${note.id}">${note.title}</li>`;
-            });
+            if (category.notes.length) {
+                category.notes.forEach((note, i) => {
+                    listHTML += `
+                        <li data-id="${note.id}">
+                            <input type="checkbox" name="todo${i}">
+                            <label for="todo${i}">${note.title}</label>
+                        </li>
+                    `;
+                });
+            } else {
+                listHTML = "<li>You don't have any notes!</li>"
+            }
 
+            categoryContainer.textContent = `Category: ${category.category}`;
+            console.log(`Just set the text content to... Category: ${category.category}`);
             noteList.innerHTML = listHTML;
 
-            return noteList;
+            notesContainer.removeChild(notesContainer.lastElementChild);
+            notesContainer.appendChild(noteList);
         }
     }
 

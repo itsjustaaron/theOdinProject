@@ -19,4 +19,13 @@ function handleDeletingNote(e) {
     e.stopPropagation();
 }
 
+function handleCategoryMenu(e) {
+    e.stopPropagation();
+    return this.classList.add('notepad__categories--expanded');
+}
+
+function handleCategorySelection(e) {
+    e.stopPropagation();
+}
+
 export { handleSavingNote, handleDeletingNote };
