@@ -173,16 +173,19 @@ button + button {
 
 .notepad__categories ul {
     display: none;
+    opacity: 0;
+    transition: .2s ease-out;
+    list-style: none;
+    width: 100%;
+    text-align: left;
+    padding-left: 0;
+    background-color: #f2f2f2;
+    z-index: 2;
 }
 
 .notepad__categories.notepad__categories--expanded ul {
     display: block;
-    width: 100%;
-    list-style: none;
-    text-align: left;
-    padding-left: 0;
-    z-index: 2;
-    background-color: #f2f2f2;
+    opacity: 1;
 }
 
 .notepad__categories__list li {

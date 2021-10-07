@@ -1,10 +1,22 @@
 const NotesController = (function () {
-    const categories = [ { category: 'Random', notes: [], id: 1 } ];
-    const { notes } = categories.find(cat => cat.id === 1);
+    let activeCategory = 'Random';
+
+    let categories;
+
+    if (localStorage?.notepad) {
+        categories = JSON.parse(localStorage.getItem('notepad'));
+    } else {
+        categories = [
+            { category: 'Random', notes: [], id: 1 },
+            { category: 'Not Random', notes: [], id: 2 },
+            { category: 'Possibly Random', notes: [], id: 3 }
+        ];
+    }
+
+    let { notes } = categories.find(cat => cat.category === activeCategory);
 
     let lastCategoryId = 1;
     let lastNoteId = 0;
-    let activeCategory = 'Random';
 
     // load a note
     function loadNote(id) {
@@ -21,6 +33,8 @@ const NotesController = (function () {
             notes.splice(noteIndex, 1, note);
         }
 
+        saveToStorage();
+
         return console.log(notes);
     }
 
@@ -32,11 +46,12 @@ const NotesController = (function () {
 
     // localStorage interactions should be a separate module
     function saveToStorage() {
-        return localStorage?.setItem('notepad', categories);
+        return localStorage?.setItem('notepad', JSON.stringify(categories));
     }
 
     function updateActiveCategory(categoryName) {
         activeCategory = categoryName;
+        notes = categories.find(cat => cat.category === activeCategory).notes;
     }
 
     function getActiveCategory() {

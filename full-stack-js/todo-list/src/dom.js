@@ -1,9 +1,16 @@
+import { handleCategorySelection } from "./handlers";
+
 const DomController = (function () {
     const notesContainer = document.querySelector('.notepad__notes');
     const categoryContainer = document.querySelector('.notepad__categories');
 
     function displayCategories(categories) {
-        const categoryList = document.querySelector('.notepad__categories__list');
+        let categoryList = document.querySelector('.notepad__categories__list');
+
+        if (!categoryList) {
+            categoryList = document.createElement('ul');
+            categoryList.classList.add('notepad__categories__list');
+        }
 
         categories.forEach(category => {
             const listItem = document.createElement('li');
@@ -15,9 +22,12 @@ const DomController = (function () {
         const lastListItem = document.createElement('li');
         lastListItem.textContent = '+ Add New Category';
         categoryList.appendChild(lastListItem);
-
-        categoryContainer.removeChild(categoryContainer.lastElementChild);
         categoryContainer.appendChild(categoryList);
+
+        const populatedList = document.querySelectorAll('.notepad__categories__list li');
+        populatedList.forEach(li => {
+            li.addEventListener('click', handleCategorySelection);
+        });
     }
 
     function displayNotes(category) {
@@ -41,6 +51,7 @@ const DomController = (function () {
 
             categoryContainer.textContent = `Category: ${category.category}`;
             console.log(`Just set the text content to... Category: ${category.category}`);
+            // categoryContainer.removeChild(categoryContainer.lastElementChild);
             noteList.innerHTML = listHTML;
 
             notesContainer.removeChild(notesContainer.lastElementChild);
