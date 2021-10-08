@@ -180,7 +180,7 @@ button + button {
     text-align: left;
     padding-left: 0;
     background-color: #f2f2f2;
-    z-index: 2;
+    z-index: 10;
 }
 
 .notepad__categories.notepad__categories--expanded ul {
@@ -204,6 +204,33 @@ button + button {
 .notepad__notes__list li {
     width: 100%;
     padding: 8px 12px;
+    position: relative;
+}
+
+.notepad__notes__list li::before {
+    content: '⬤';
+    color: #d8d8d8;
+    font-size: 10px;
+    position: absolute;
+    top: 50%;
+    right: 5%;
+    transform: translateY(-50%);
+}
+
+.notepad__categories--expanded + .notepad__notes__list li {
+    z-index: -1;
+}
+
+.notepad__notes__list li[data-priority="high"]::before {
+    color: #FF5E5B; /* #E01A4F #D33F49 #D7263D #890620 */
+}
+
+.notepad__notes__list li[data-priority="medium"]::before {
+    color: #F8FA90; /* #FFDC5E #F5FF90 #F6F930 */
+}
+
+.notepad__notes__list li[data-priority="low"]::before {
+    color: #BEFFC7; /* #93C48B #99C1B9 #B9F18C #33673B */
 }
 
 .notepad__notes__list label {
