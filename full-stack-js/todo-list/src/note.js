@@ -16,8 +16,7 @@ const NotesController = (function() {
 
   let { notes } = categories.find(cat => cat.category === activeCategory);
 
-  // eslint-disable-next-line
-  let lastCategoryId = categories?.length;
+  let lastCategoryId = categories.length ? categories.length - 1 : 0;
   let lastNoteId = 0;
 
   // localStorage interactions should be a separate module
@@ -70,6 +69,18 @@ const NotesController = (function() {
     return categories;
   }
 
+  function saveCategory(category) {
+    const newCategory = {
+      category,
+      notes: [],
+      id: lastCategoryId++
+    };
+
+    categories.push(newCategory);
+
+    saveToStorage();
+  }
+
   return {
     loadNote,
     saveNote,
@@ -77,6 +88,7 @@ const NotesController = (function() {
     updateActiveCategory,
     getActiveCategory,
     getAllCategories,
+    saveCategory
   };
 })();
 

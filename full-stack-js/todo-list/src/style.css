@@ -319,3 +319,60 @@ form button:hover {
     color: white;
     background-color: #FF6E51;
 }
+
+/* category modal */
+.category-modal:before {
+    content: "";
+    display: none;
+    background: rgba(0, 0, 0, 0.6);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 10;
+}
+
+.category-modal--open:before {
+    display: block;
+}
+
+.category-modal--open .category-form {
+    transform: translate(-50%, -50%);
+}
+
+.category-form {
+    width: 600px;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, 500%);
+    transition: transform .2s ease-out;
+    z-index: 11;
+    background: #fefefd;
+    border-radius: 16px;
+    padding: 0;
+}
+
+.category-modal-header {
+    background-color: hsl(0, 0%, 93%);
+    margin-bottom: 10px;
+    border-radius: 8px 8px 0 0;
+    position: relative;
+}
+
+.category-modal-header h2 {
+    font-size: 24px;
+    text-align: center;
+    padding: 16px;
+}
+
+.category-modal-close {
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding-top: 5px;
+    padding-right: 14px;
+    font-size: 24px;
+    cursor: pointer;
+}

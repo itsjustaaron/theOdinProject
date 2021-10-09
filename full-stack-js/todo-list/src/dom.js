@@ -1,5 +1,6 @@
 // eslint-disable-next-line import/no-cycle
 import { handleCategorySelection, handleNoteSelection } from './handlers';
+import { capitalize } from './helpers';
 
 const DomController = (function() {
   const notesContainer = document.querySelector('.notepad__notes');
@@ -15,7 +16,8 @@ const DomController = (function() {
 
     categories.forEach(category => {
       const listItem = document.createElement('li');
-      listItem.textContent = category.category;
+      let categoryName = category.category.split(' ');
+      listItem.textContent = categoryName.map(capitalize).join(' ');
       listItem.dataset.id = category.id;
       categoryList.appendChild(listItem);
     });
@@ -81,7 +83,45 @@ const DomController = (function() {
     form.querySelector('textarea').value = description;
   }
 
-  return { displayCategories, displayNotes, displayNote };
+  function displayModal() {
+    // hard code opening for now
+    const modal = document.querySelector('.category-modal');
+    modal.classList.add('category-modal--open');
+
+    // if user clicks outside of modal or clicks close button, close modal
+    modal.addEventListener('click', e => {
+      e.stopPropagation();
+
+      if (
+        !e.target.closest('.category-form') ||
+        e.target.closest('.category-modal-close')
+      ) {
+        console.log('Clicked outside of the modal - modal will close');
+        modal.classList.remove('category-modal--open');
+      } else {
+        console.log('Clicked inside the modal - modal will not close');
+      }
+    });
+
+    // allow modal to close with escape key
+    document.body.addEventListener(
+      'keydown',
+      e => {
+        if (e.key === 'Escape' && document.querySelector('.category-modal--open')) {
+          modal.classList.remove('category-modal--open');
+        }
+      },
+      { once: true }
+    );
+
+    // close modal when form is submitted;
+    const form = modal.querySelector('form');
+    form.addEventListener('submit', e => {
+      modal.classList.remove('category-modal--open');
+    });
+  }
+
+  return { displayCategories, displayNotes, displayNote, displayModal };
 })();
 
 export default DomController;

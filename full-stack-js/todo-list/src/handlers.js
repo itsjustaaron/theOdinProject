@@ -1,7 +1,7 @@
 import NotesController from './note';
 // eslint-disable-next-line import/no-cycle
 import DomController from './dom';
-import setDateAsToday from './helpers';
+import { setDateAsToday } from './helpers';
 
 const form = document.querySelector('form');
 
@@ -50,6 +50,21 @@ function handleDeletingNote(e) {
   }
 }
 
+function handleSavingCategory(e) {
+  e.stopPropagation();
+  e.preventDefault();
+
+  // grab user input and clear form
+  const categoryTitle = this[0].value;
+  this.reset();
+  // save new category and switch from current to new
+  NotesController.saveCategory(categoryTitle);
+  NotesController.updateActiveCategory(categoryTitle);
+  DomController.displayNotes(NotesController.getActiveCategory());
+  // close modal
+  this.parentElement.classList.remove('category-modal--open');
+}
+
 function handleCategoryMenu(e) {
   e.stopPropagation();
   if (!document.querySelector('.notepad__categories--expanded')) {
@@ -74,7 +89,7 @@ function handleCategorySelection(e) {
     DomController.displayNotes(NotesController.getActiveCategory());
   } else {
     // toggle add new category
-    console.log('Coming soon :)');
+    DomController.displayModal();
   }
 }
 
@@ -94,4 +109,5 @@ export {
   handleCategoryMenu,
   handleCategorySelection,
   handleNoteSelection,
+  handleSavingCategory,
 };

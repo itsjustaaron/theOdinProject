@@ -4,8 +4,9 @@ import {
   handleDeletingNote,
   handleCategoryMenu,
   handleCategorySelection,
+  handleSavingCategory
 } from './handlers';
-import setDateAsToday from './helpers';
+import { setDateAsToday } from './helpers';
 import NotesController from './note';
 import DomController from './dom';
 
@@ -24,5 +25,8 @@ addNoteButton.addEventListener('click', handleCreatingNote);
 
 const deleteNoteButton = document.querySelector('button.trash');
 deleteNoteButton.addEventListener('click', handleDeletingNote);
+
+const modalForm = document.querySelector('.category-modal form');
+modalForm.addEventListener('submit', handleSavingCategory);
 
 DomController.displayNotes(NotesController.getActiveCategory());
