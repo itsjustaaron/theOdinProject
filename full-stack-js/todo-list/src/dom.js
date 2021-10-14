@@ -12,6 +12,8 @@ const DomController = (function() {
     if (!categoryList) {
       categoryList = document.createElement('ul');
       categoryList.classList.add('notepad__categories__list');
+    } else {
+      categoryList.innerHTML = '';
     }
 
     categories.forEach(category => {
